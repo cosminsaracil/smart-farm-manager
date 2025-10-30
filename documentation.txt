@@ -1,0 +1,88 @@
+# Smart farm manager
+
+
+/ This is project that aims to be an ERP for a farm environment.
+
+First, I set up the Next project which will be the fullstack solution. The DB will be a mongodb database container exposed on 27017 port.
+
+Step 1. Define data model for mongo
+
+So we'll need at least 6 entities:
+
+- Farmers - Utilizatorii sistemului (administratorii fermei) _id, name, email, password, role
+- Fields (terenurile) Parcela de teren din fermă _id, name, area, location, soil_type, farmer_id
+- Crops (culturile) Tipurile de plante cultivate _id, name, type, planting_date, harvest_date, field_id
+- Animals (animalele) Evidența animalelor de fermă _id, tag, species, birth_date, weight, health_status, farmer_id
+- Equipment (echipamente) Tractoare, utilaje etc. _id, name, type, status, purchase_date, last_service_date
+- Expenses (cheltuieli) Înregistrări financiare _id, category, amount, date, description, farmer_id
+
+A conceptual ERD model is this:
+┌──────────────┐           ┌──────────────┐
+│   Farmers    │           │   Equipment  │
+│--------------│           │--------------│
+│ _id          │◄──────────┤ farmer_id    │
+│ name         │           │ name         │
+│ email        │           │ type         │
+│ password     │           │ status       │
+│ role         │           │ last_service │
+└──────┬───────┘           └──────────────┘
+       │
+       │1        ┌──────────────┐
+       │         │   Fields     │
+       │────────►│--------------│
+       │         │ _id          │
+       │         │ name         │
+       │         │ area         │
+       │         │ soil_type    │
+       │         │ farmer_id    │
+       │         └──────┬───────┘
+       │                │
+       │1               │1..*
+       │                ▼
+       │         ┌──────────────┐
+       │         │   Crops      │
+       │         │--------------│
+       │         │ _id          │
+       │         │ name         │
+       │         │ type         │
+       │         │ planting_date│
+       │         │ harvest_date │
+       │         │ field_id     │
+       │         └──────────────┘
+       │
+       │1
+       │
+       ▼
+┌──────────────┐
+│   Animals    │
+│--------------│
+│ _id          │
+│ tag          │
+│ species      │
+│ birth_date   │
+│ weight       │
+│ health_status│
+│ farmer_id    │
+└──────────────┘
+
+┌──────────────┐
+│   Expenses   │
+│--------------│
+│ _id          │
+│ category     │
+│ amount       │
+│ date         │
+│ description  │
+│ farmer_id    │
+└──────────────┘
+ 
+Relationship  	    Type            Description
+Farmer → Fields	    1-to-many	    A farmer owns many fields
+Field → Crops	      1-to-many	    A field has many crops
+Farmer → Animals	  1-to-many	    A farmer owns many animals
+Farmer → Equipment	1-to-many	    A farmer owns many pieces of equipment
+Farmer → Expenses	  1-to-many	    A farmer has many expenses
+
+MongoDB fiind o bază NoSQL, relațiile nu se implementează prin foreign keys reale, ci prin referințe logice (ID-uri).
+
+De exemplu, în Fields salvăm farmer_id (ObjectId al fermierului), iar în Crops salvăm field_id.
