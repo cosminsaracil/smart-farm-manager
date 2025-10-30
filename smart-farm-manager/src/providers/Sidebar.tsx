@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ROUTES } from "@/utils/routes";
 import { useTheme } from "@/providers/ThemeProvider";
-import { Home, LayoutDashboard } from "lucide-react";
+import { Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 
