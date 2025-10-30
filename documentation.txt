@@ -86,3 +86,9 @@ Farmer → Expenses	  1-to-many	    A farmer has many expenses
 MongoDB fiind o bază NoSQL, relațiile nu se implementează prin foreign keys reale, ci prin referințe logice (ID-uri).
 
 De exemplu, în Fields salvăm farmer_id (ObjectId al fermierului), iar în Crops salvăm field_id.
+
+Step 2. Define the models inside /models folder for each entity.
+
+Step 3. Define the routes inside /app/api folder for each entity.
+
+Step 4. Run the project. 
