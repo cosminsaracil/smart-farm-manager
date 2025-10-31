@@ -3,7 +3,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { getAllFarmers } from "@/utils/hooks/api/farmers/useGetAllFarmers";
+import { getAllFarmers } from "@/utils/hooks/api/farmers/useGetFarmers";
 import { FarmersDashboard } from "@/components/features/farmers";
 
 export default async function Farmers() {

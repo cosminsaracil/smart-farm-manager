@@ -1,19 +1,31 @@
-import { useMutation } from "@tanstack/react-query";
-import { BASE_URL } from "@/utils/constants";
-import { FarmerPayload } from "./types";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import { apiClient } from "../../apiClient";
+import { Farmer, FarmerPayload } from "./types";
 
-async function addFarmer(data: FarmerPayload) {
-  const res = await fetch(BASE_URL, {
+async function addFarmer(data: FarmerPayload): Promise<Farmer> {
+  return apiClient<Farmer>("/farmers", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
+    body: data,
   });
-  if (!res.ok) throw new Error("Failed to create farmer");
-  return res.json();
 }
 
-export function useAddFarmer() {
+export function useAddFarmer(): UseMutationResult<
+  Farmer, // Type of returned data
+  Error, // Type of error
+  FarmerPayload // Type of variables you pass to mutate()
+> {
   return useMutation({
     mutationFn: addFarmer,
   });
 }
+
+// Benefits of this hook:
+
+// const addFarmer = useAddFarmer();
+
+// addFarmer.mutate({
+//   name: "Ion Popescu",
+//   email: "ion@ferma.ro",
+//   password: "12345",
+//   role: "admin",
+// });

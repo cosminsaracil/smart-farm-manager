@@ -1,5 +1,5 @@
 "use client";
-import { useFarmers } from "@/utils/hooks/api/farmers/useGetAllFarmers";
+import { useFarmers } from "@/utils/hooks/api/farmers/useGetFarmers";
 export const FarmersDashboard = () => {
   const { data: farmers, isLoading, isError } = useFarmers();
 

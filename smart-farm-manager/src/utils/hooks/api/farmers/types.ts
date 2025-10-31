@@ -7,9 +7,4 @@ export type Farmer = {
   __v?: number;
 };
 
-export type FarmerPayload = {
-  name: string;
-  email: string;
-  password: string;
-  role: "admin" | "worker";
-};
+export type FarmerPayload = Omit<Farmer, "_id" | "__v">;
