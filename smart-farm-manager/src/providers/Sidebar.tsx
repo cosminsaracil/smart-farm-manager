@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ROUTES } from "@/utils/routes";
 import { useTheme } from "@/providers/ThemeProvider";
-import { Home } from "lucide-react";
+import { Home, Users2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 
@@ -11,7 +11,10 @@ export default function Sidebar() {
   const { theme } = useTheme();
   const pathname = usePathname();
 
-  const menuItems = [{ text: "Home", icon: Home, href: ROUTES.HOME }];
+  const menuItems = [
+    { text: "Home", icon: Home, href: ROUTES.HOME },
+    { text: "Farmers", icon: Users2, href: ROUTES.FARMERS },
+  ];
 
   return (
     <aside

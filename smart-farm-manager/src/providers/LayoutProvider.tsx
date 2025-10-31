@@ -7,12 +7,25 @@ import Sidebar from "./Sidebar";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ROUTES } from "@/utils/routes";
 
 export default function LayoutProvider({ children }: { children: ReactNode }) {
   const { theme, toggleTheme } = useTheme();
   const pathname = usePathname();
   const currentDate = dayjs().format("YYYY-MM-DD");
-  const title = pathname === "/" ? "" : "Statistics";
+
+  let title = "";
+  switch (pathname) {
+    case ROUTES.HOME:
+      title = "Dashboard";
+      break;
+    case ROUTES.FARMERS:
+      title = "Farmers Management";
+      break;
+    default:
+      title = "";
+      break;
+  }
 
   return (
     <div
