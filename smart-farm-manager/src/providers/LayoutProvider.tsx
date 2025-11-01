@@ -31,10 +31,9 @@ export default function LayoutProvider({ children }: { children: ReactNode }) {
   return (
     <div
       className={cn(
-        "h-screen overflow-hidden bg-background text-foreground transition-colors"
+        "h-screen bg-background text-foreground transition-colors overflow-hidden"
       )}
     >
-      {/* ✅ Fixed Topbar */}
       <header
         className={cn(
           "fixed top-0 left-0 right-0 w-full border-b shadow-shadow z-20 bg-secondary-background border-border"
@@ -70,13 +69,11 @@ export default function LayoutProvider({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      {/* ✅ Fixed Sidebar (starts below topbar) */}
       <aside className="fixed left-0 top-[73px] bottom-0 w-60 border-r border-border bg-secondary-background overflow-y-auto">
         <Sidebar />
       </aside>
 
-      {/* ✅ Main content with proper margins */}
-      <main className="fixed left-60 right-0 top-[73px] bottom-0 p-6 overflow-y-auto">
+      <main className="ml-60 mt-[73px] p-6 h-[calc(100vh-73px)] overflow-y-auto">
         {children}
       </main>
     </div>

@@ -1,5 +1,4 @@
 import React from "react";
-
 import { cn } from "@/lib/utils";
 
 const ContentWrapper = React.forwardRef<
@@ -7,8 +6,14 @@ const ContentWrapper = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
   return (
-    <div ref={ref} className={cn("flex flex-col gap-8", className)} {...props}>
-      {children}
+    <div className="mx-auto max-w-5xl px-6 py-8">
+      <div
+        ref={ref}
+        className={cn("flex flex-col gap-8", className)}
+        {...props}
+      >
+        {children}
+      </div>
     </div>
   );
 });
