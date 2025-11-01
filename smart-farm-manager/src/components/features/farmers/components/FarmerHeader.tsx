@@ -6,8 +6,7 @@ export const FarmerHeader = () => {
   return (
     <header className="flex justify-between items-center mb-8">
       <div>
-        <h1 className="text-3xl font-bold">Farmers Management</h1>
-        <p className="text-gray-600">Manage all your farmers here</p>
+        <h1 className="text-2xl font-bold">Manage all your users here</h1>
       </div>
       <Button
         variant={"ghost"}
