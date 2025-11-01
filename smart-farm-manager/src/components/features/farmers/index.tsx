@@ -1,6 +1,7 @@
 "use client";
 
 import { FarmerHeader } from "./components/FarmerHeader";
+import { FarmerBody } from "./components/FarmerBody";
 import ContentWrapper from "@/components/ui/content-wrapper";
 import { useFarmers } from "@/utils/hooks/api/farmers/useGetFarmers";
 import { LoadingSpinner } from "@/components/ui/Spinner/Spiner";
@@ -9,6 +10,7 @@ import { ErrorPage } from "@/components/ui/Error/ErrorPage";
 export const FarmersDashboard = () => {
   const { data, isFetching, error, refetch } = useFarmers();
 
+  console.log("Farmers data:", data);
   if (isFetching) return <LoadingSpinner />;
 
   if (error)
@@ -22,6 +24,7 @@ export const FarmersDashboard = () => {
   return (
     <ContentWrapper>
       <FarmerHeader />
+      <FarmerBody data={data || []} />
     </ContentWrapper>
   );
 };
