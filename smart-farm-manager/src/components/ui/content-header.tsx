@@ -61,7 +61,7 @@ const ContentHeader = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        "flex justify-between items-center max-md:flex-col max-md:items-start w-full bg-background border border-containerBorder p-4 rounded-md",
+        "flex justify-between items-center max-md:flex-col max-md:items-start w-full bg-background p-4 rounded-md",
         className
       )}
       {...props}

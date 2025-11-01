@@ -31,13 +31,13 @@ export default function LayoutProvider({ children }: { children: ReactNode }) {
   return (
     <div
       className={cn(
-        "min-h-screen flex flex-col bg-background text-foreground transition-colors"
+        "h-screen overflow-hidden bg-background text-foreground transition-colors"
       )}
     >
-      {/* ✅ Topbar full width */}
+      {/* ✅ Fixed Topbar */}
       <header
         className={cn(
-          "w-full border-b shadow-shadow z-20 bg-secondary-background border-border"
+          "fixed top-0 left-0 right-0 w-full border-b shadow-shadow z-20 bg-secondary-background border-border"
         )}
       >
         <div className="mx-auto w-full max-w-[70%] flex justify-between items-center py-4">
@@ -47,12 +47,11 @@ export default function LayoutProvider({ children }: { children: ReactNode }) {
               alt="App Logo"
               width={40}
               height={40}
-              className="rounded-md "
+              className="rounded-md"
             />
             <h1 className="text-2xl font-bold">{title}</h1>
           </div>
 
-          {/* Right section: date + theme toggle */}
           <div className="flex items-center gap-4">
             <span className="text-sm text-foreground/70">{currentDate}</span>
             <Button
@@ -71,14 +70,15 @@ export default function LayoutProvider({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      {/* ✅ Sidebar + Content Area */}
-      <div className="flex flex-1 min-h-0">
-        <aside className="w-60 shrink-0 border-r border-border bg-secondary-background">
-          <Sidebar />
-        </aside>
+      {/* ✅ Fixed Sidebar (starts below topbar) */}
+      <aside className="fixed left-0 top-[73px] bottom-0 w-60 border-r border-border bg-secondary-background overflow-y-auto">
+        <Sidebar />
+      </aside>
 
-        <main className="flex-1 p-6 overflow-y-auto">{children}</main>
-      </div>
+      {/* ✅ Main content with proper margins */}
+      <main className="fixed left-60 right-0 top-[73px] bottom-0 p-6 overflow-y-auto">
+        {children}
+      </main>
     </div>
   );
 }
