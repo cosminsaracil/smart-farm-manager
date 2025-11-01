@@ -6,6 +6,7 @@ import {
   ContentHeaderContent,
   ContentHeaderDescription,
 } from "@/components/ui/content-header";
+import { AddFarmerDrawer } from "./AddFarmerDrawer";
 import { Plus, Users } from "lucide-react";
 
 export const FarmerHeader = () => {
@@ -22,14 +23,7 @@ export const FarmerHeader = () => {
         </ContentHeaderDescription>
       </div>
       <ContentHeaderContent className="gap-2">
-        <Button
-          onClick={() => console.log("Add farmer button clicked")}
-          className="flex items-center gap-2"
-          size="sm"
-        >
-          <Plus size={16} />
-          Add Farmer
-        </Button>
+        <AddFarmerDrawer />
       </ContentHeaderContent>
     </ContentHeader>
   );

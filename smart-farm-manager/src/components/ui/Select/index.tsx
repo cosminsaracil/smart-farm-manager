@@ -60,10 +60,20 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
           </SelectTrigger>
           <SelectContent>
             {options?.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
+              <SelectItem
+                key={option.value}
+                value={option.value}
+                className={cn(
+                  "cursor-pointer px-2 py-1.5 rounded-md",
+                  "hover:bg-gray-50 dark:hover:bg-gray-800/50",
+                  "data-[state=checked]:bg-muted data-[state=checked]:text-foreground",
+                  "transition-colors"
+                )}
+              >
                 {option.label}
               </SelectItem>
             ))}
+
             {children}
           </SelectContent>
         </ShadcnSelect>
