@@ -1,5 +1,6 @@
 "use client";
 import { ReactNode } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useTheme } from "./ThemeProvider";
 import dayjs from "dayjs";
@@ -30,45 +31,35 @@ export default function LayoutProvider({ children }: { children: ReactNode }) {
   return (
     <div
       className={cn(
-        "min-h-screen flex",
-        theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"
+        "min-h-screen flex flex-col bg-background text-foreground transition-colors"
       )}
     >
-      {/* Sidebar */}
-      <div className="fixed left-0 top-0 h-screen z-30">
-        <Sidebar />
-      </div>
+      {/* ✅ Topbar full width */}
+      <header
+        className={cn(
+          "w-full border-b shadow-shadow z-20 bg-secondary-background border-border"
+        )}
+      >
+        <div className="mx-auto w-full max-w-[70%] flex justify-between items-center py-4">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo.png"
+              alt="App Logo"
+              width={40}
+              height={40}
+              className="rounded-md "
+            />
+            <h1 className="text-2xl font-bold">{title}</h1>
+          </div>
 
-      {/* Main content area with left margin for sidebar */}
-      <div className="flex-1 flex flex-col ml-64">
-        {/* Top Bar */}
-        <header
-          className={cn(
-            "fixed top-0 right-0 left-64 flex justify-between items-center p-4 border-b z-20",
-            theme === "dark"
-              ? "border-gray-800 bg-gray-900"
-              : "border-gray-200 bg-white"
-          )}
-        >
-          <h1 className="text-2xl font-bold">{title}</h1>
+          {/* Right section: date + theme toggle */}
           <div className="flex items-center gap-4">
-            <span
-              className={cn(
-                "text-sm",
-                theme === "dark" ? "text-gray-400" : "text-gray-600"
-              )}
-            >
-              {currentDate}
-            </span>
+            <span className="text-sm text-foreground/70">{currentDate}</span>
             <Button
               variant="outline"
               size="icon"
               onClick={toggleTheme}
-              className={cn(
-                theme === "dark"
-                  ? "border-gray-700 hover:bg-gray-800"
-                  : "border-gray-300 hover:bg-gray-100"
-              )}
+              className="border-border hover:bg-background"
             >
               {theme === "light" ? (
                 <Moon className="h-4 w-4" />
@@ -77,10 +68,16 @@ export default function LayoutProvider({ children }: { children: ReactNode }) {
               )}
             </Button>
           </div>
-        </header>
+        </div>
+      </header>
 
-        {/* Scrollable Page content with top padding for fixed header */}
-        <main className="p-6 flex-1 mt-[73px] overflow-y-auto">{children}</main>
+      {/* ✅ Sidebar + Content Area */}
+      <div className="flex flex-1 min-h-0">
+        <aside className="w-60 shrink-0 border-r border-border bg-secondary-background">
+          <Sidebar />
+        </aside>
+
+        <main className="flex-1 p-6 overflow-y-auto">{children}</main>
       </div>
     </div>
   );
