@@ -10,7 +10,7 @@ import { Plus, Users } from "lucide-react";
 
 export const FarmerHeader = () => {
   return (
-    <ContentHeader className="mb-8 border border-border shadow-sm">
+    <ContentHeader className="mb-8 border border-gray-300 dark:border-gray-600 shadow-sm">
       <div className="flex flex-col gap-2">
         <ContentHeaderTitle className="font-semibold text-foreground">
           <Users className="h-5 w-5 text-primary" />

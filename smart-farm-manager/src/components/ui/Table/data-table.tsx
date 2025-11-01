@@ -92,7 +92,7 @@ export function GenericTable<T>({
     showPagination && data.length > DEFAULT_PAGE_SIZE;
 
   return (
-    <Card className="p-6 w-full border">
+    <Card className="p-6 w-full border border-gray-300 dark:border-gray-600 shadow-sm">
       {(title || showSearch) && (
         <div className="flex flex-wrap justify-between items-center mb-4 gap-4">
           {title && (
@@ -114,7 +114,10 @@ export function GenericTable<T>({
       <Table className={cn(disabled && "pointer-events-none opacity-50")}>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="bg-muted/50">
+            <TableRow
+              key={headerGroup.id}
+              className="bg-muted/50 hover:bg-muted/50"
+            >
               {headerGroup.headers.map((header) => {
                 const sorted = header.column.getIsSorted();
                 const canSort = header.column.getCanSort();
@@ -153,7 +156,7 @@ export function GenericTable<T>({
           {table.getRowModel().rows.map((row) => (
             <TableRow
               key={row.id}
-              className=" hover:bg-muted/40 data-[state=selected]:bg-muted"
+              className="hover:bg-gray-50 dark:hover:bg-gray-800/50 data-[state=selected]:bg-muted transition-colors"
             >
               {row.getVisibleCells().map((cell) => (
                 <TableCell
