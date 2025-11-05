@@ -6,7 +6,7 @@ import {
   ContentHeaderContent,
   ContentHeaderDescription,
 } from "@/components/ui/content-header";
-import { AddFarmerDrawer } from "./AddFarmerDrawer";
+import { AddFarmerDrawer } from "./components/AddFarmerDrawer";
 import { Users } from "lucide-react";
 
 export const FarmerHeader = () => {

@@ -66,7 +66,11 @@ export const Drawer = ({
           {footer}
           {!hideFooterCloseButton && (
             <DrawerClose asChild>
-              <Button aria-label="close create assessment" variant="outline">
+              <Button
+                aria-label="close drawer"
+                variant="outline"
+                className="hover:bg-red-50 hover:text-red-600 transition-colors duration-200"
+              >
                 Cancel
               </Button>
             </DrawerClose>

@@ -5,7 +5,7 @@ import { CheckCircle2, AlertTriangle } from "lucide-react";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { GenericTable } from "@/components/ui/Table/data-table";
-import { EditFarmerDrawer } from "./EditFarmerDrawer";
+import { EditFarmerDrawer } from "./components/EditFarmerDrawer";
 import { useUpdateFarmer } from "@/utils/hooks/api/farmers/usePatchFarmer";
 import { useDeleteFarmer } from "@/utils/hooks/api/farmers/useDeleteFarmer";
 import { ActionButton } from "./types";
