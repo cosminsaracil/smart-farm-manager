@@ -1,19 +1,22 @@
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
-import { Farmer, FarmerPayload } from "./types";
+import {
+  useMutation,
+  UseMutationResult,
+  UseMutationOptions,
+} from "@tanstack/react-query";
+import { Farmer, UpdateFarmerPayload } from "./types";
 import { apiClient } from "../../apiClient";
-async function updateFarmer(data: FarmerPayload): Promise<Farmer> {
+async function updateFarmer(data: UpdateFarmerPayload): Promise<Farmer> {
   return apiClient<Farmer>("/farmers", {
     method: "PUT",
     body: data,
   });
 }
 
-export function useUpdateFarmer(): UseMutationResult<
-  Farmer,
-  Error,
-  FarmerPayload
-> {
+export function useUpdateFarmer(
+  options?: UseMutationOptions<Farmer, Error, UpdateFarmerPayload>
+): UseMutationResult<Farmer, Error, UpdateFarmerPayload> {
   return useMutation({
     mutationFn: updateFarmer,
+    ...options,
   });
 }

@@ -10,7 +10,6 @@ import { ErrorPage } from "@/components/ui/Error/ErrorPage";
 export const FarmersDashboard = () => {
   const { data, isFetching, error, refetch } = useFarmers();
 
-  console.log("Farmers data:", data);
   if (isFetching) return <LoadingSpinner />;
 
   if (error)

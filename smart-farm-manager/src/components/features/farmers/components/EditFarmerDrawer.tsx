@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
-import { useAddFarmer } from "@/utils/hooks/api/farmers/usePostFarmer";
 import { toast } from "sonner";
-import { CheckCircle2, AlertTriangle, Plus } from "lucide-react";
+import { CheckCircle2, AlertTriangle } from "lucide-react";
 
 import * as z from "zod";
 
@@ -18,92 +17,93 @@ import { Form, FormField } from "@/components/ui/Form/form";
 import { FormInputField } from "@/components/ui/Form/FormInputField";
 import { FormSelectField } from "@/components/ui/Form/FormSelectField";
 
+import type { Farmer } from "@/utils/hooks/api/farmers/types";
+
 const farmerSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().optional(),
   role: z.enum(["worker", "admin"], "Role is required"),
 });
 
 type FarmerFormData = z.infer<typeof farmerSchema>;
 
-export const AddFarmerDrawer = () => {
-  const [openDrawer, setOpenDrawer] = useState(false);
+interface EditFarmerDrawerProps {
+  farmer: Farmer;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onUpdate?: (data: Farmer) => Promise<void>;
+}
+
+export const EditFarmerDrawer = ({
+  farmer,
+  open,
+  onOpenChange,
+  onUpdate,
+}: EditFarmerDrawerProps) => {
   const [openDialog, setOpenDialog] = useState(false);
   const queryClient = useQueryClient();
 
   const form = useForm<FarmerFormData>({
     resolver: zodResolver(farmerSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      name: farmer.name,
+      email: farmer.email,
       password: "",
-      role: "worker",
+      role: farmer.role,
     },
     mode: "all",
   });
 
-  const { watch, handleSubmit, reset, control, formState } = form;
-  const { isValid } = formState;
+  const { handleSubmit, reset, control, formState } = form;
+  const { isValid, isDirty } = formState;
 
-  const formValues = watch();
-  const isFormUpdated = useMemo(
-    () => Object.values(formValues).some((value) => value !== ""),
-    [formValues]
-  );
-
-  const addFarmerMut = useAddFarmer({
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["farmers"] });
-      toast.success("Farmer added successfully!", {
-        icon: <CheckCircle2 className="h-5 w-5 text-green-500" />,
-      });
-    },
-
-    onError: (error) => {
-      console.error("Error creating assessment:", error);
-      toast.error("Failed to add farmer. Please try again.", {
-        icon: <AlertTriangle className="h-5 w-5 text-red-500" />,
-      });
-    },
-  });
-  const isSubmitDisabled =
-    !isValid || Object.keys(formValues).length === 0 || addFarmerMut.isPending;
+  const isFormUpdated = useMemo(() => isDirty, [isDirty]);
 
   const onSubmit = async (data: FarmerFormData) => {
-    try {
-      console.log("Submitting data:", data);
-      await addFarmerMut.mutateAsync(data);
-      setOpenDrawer(false);
-      reset();
-    } catch (error) {
-      console.error("Error creating assessment:", error);
+    const updateData: Farmer = {
+      _id: farmer._id,
+      name: data.name,
+      email: data.email,
+      role: data.role,
+      password: data.password || farmer.password,
+    };
+
+    if (onUpdate) {
+      await onUpdate(updateData);
     }
+
+    onOpenChange(false);
+    reset();
   };
 
   const onDialogConfirmCancel = () => {
     reset();
     setOpenDialog(false);
-    setOpenDrawer(false);
+    onOpenChange(false);
   };
 
   const handleCancel = () => {
-    if (isFormUpdated) setOpenDialog(true);
-    else {
-      setOpenDrawer(false);
+    if (isFormUpdated) {
+      setOpenDialog(true);
+    } else {
+      onOpenChange(false);
       reset();
     }
   };
 
   const toggleDrawerState = (isOpen: boolean) => {
-    if (isOpen) setOpenDrawer(true);
-    else handleCancel();
+    if (isOpen) {
+      onOpenChange(true);
+    } else {
+      handleCancel();
+    }
   };
 
   const renderDrawerFooter = () => (
     <>
-      <Button onClick={handleSubmit(onSubmit)} disabled={isSubmitDisabled}>
-        Submit
+      <Button onClick={handleSubmit(onSubmit)} disabled={!isValid}>
+        Update
       </Button>
       <Button variant="outline" onClick={handleCancel}>
         Cancel
@@ -114,15 +114,9 @@ export const AddFarmerDrawer = () => {
   return (
     <>
       <Drawer
-        open={openDrawer}
+        open={open}
         onOpenChange={toggleDrawerState}
-        trigger={
-          <Button variant="outline">
-            <Plus className="h-4 w-4" />
-            Add Farmer
-          </Button>
-        }
-        title="Add New Farmer"
+        title="Edit Farmer"
         footer={renderDrawerFooter()}
         hideFooterCloseButton
       >
@@ -154,7 +148,7 @@ export const AddFarmerDrawer = () => {
                 <FormInputField
                   label="Password"
                   type="password"
-                  required
+                  placeholder="Leave blank to keep current password"
                   {...field}
                 />
               )}
@@ -182,7 +176,7 @@ export const AddFarmerDrawer = () => {
       <Dialog
         open={openDialog}
         setOpen={setOpenDialog}
-        title="Cancel Form"
+        title="Cancel Changes"
         description="Are you sure you want to cancel? All changes will be lost."
         onConfirm={onDialogConfirmCancel}
         onCancel={() => setOpenDialog(false)}
