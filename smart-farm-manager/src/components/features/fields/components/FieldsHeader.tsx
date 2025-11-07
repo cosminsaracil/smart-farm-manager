@@ -1,4 +1,5 @@
 "use client";
+
 import {
   ContentHeader,
   ContentHeaderTitle,
@@ -6,9 +7,14 @@ import {
   ContentHeaderDescription,
 } from "@/components/ui/content-header";
 import { AddFieldDrawer } from "./components/AddFieldDrawer";
-import { Grid2X2Check } from "lucide-react";
+import { Grid2X2Check, BarChart3 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-export const FieldsHeader = () => {
+interface FieldsHeaderProps {
+  onViewAnalytics: () => void;
+}
+
+export const FieldsHeader = ({ onViewAnalytics }: FieldsHeaderProps) => {
   return (
     <ContentHeader className="mb-8 border border-gray-300 dark:border-gray-600 shadow-sm">
       <div className="flex flex-col gap-2">
@@ -22,6 +28,10 @@ export const FieldsHeader = () => {
         </ContentHeaderDescription>
       </div>
       <ContentHeaderContent className="gap-2">
+        <Button variant="outline" onClick={onViewAnalytics} className="gap-2">
+          <BarChart3 className="h-4 w-4" />
+          View Analytics
+        </Button>
         <AddFieldDrawer />
       </ContentHeaderContent>
     </ContentHeader>

@@ -120,7 +120,6 @@ export const FieldsBody = ({ data }: { data: Field[] }) => {
   ];
 
   const actionButtons = [
-    { id: "view", label: "View" },
     { id: "edit", label: "Edit" },
     { id: "delete", label: "Delete" },
   ];
@@ -128,9 +127,6 @@ export const FieldsBody = ({ data }: { data: Field[] }) => {
   const handleMoreMenu = (row: Field, action: ActionButton) => {
     const { label } = action;
     switch (label.toLowerCase()) {
-      case "view":
-        console.log("Viewing field:", row);
-        break;
       case "edit":
         setSelectedField(row);
         setEditDrawerOpen(true);

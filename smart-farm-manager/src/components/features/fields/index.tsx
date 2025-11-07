@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { FieldsHeader } from "./components/FieldsHeader";
 import { FieldsBody } from "./components/FieldsBody";
+import { FieldAnalytics } from "./components/FieldsAnalytics";
 import ContentWrapper from "@/components/ui/content-wrapper";
 import { useGetFields } from "@/utils/hooks/api/fields/useGetFields";
 import { LoadingSpinner } from "@/components/ui/Spinner/Spiner";
@@ -9,6 +11,8 @@ import { ErrorPage } from "@/components/ui/Error/ErrorPage";
 
 export const FieldsDashboard = () => {
   const { data, isFetching, error, refetch } = useGetFields();
+  const [analyticsOpen, setAnalyticsOpen] = useState(false);
+
   console.log("Fields data:", data);
 
   if (isFetching) return <LoadingSpinner />;
@@ -16,15 +20,20 @@ export const FieldsDashboard = () => {
   if (error)
     return (
       <ErrorPage
-        message="Failed to load farmers data."
+        message="Failed to load fields data."
         onRetry={() => refetch()}
       />
     );
 
   return (
     <ContentWrapper>
-      <FieldsHeader />
+      <FieldsHeader onViewAnalytics={() => setAnalyticsOpen(true)} />
       <FieldsBody data={data || []} />
+      <FieldAnalytics
+        fields={data || []}
+        open={analyticsOpen}
+        onClose={() => setAnalyticsOpen(false)}
+      />
     </ContentWrapper>
   );
 };
