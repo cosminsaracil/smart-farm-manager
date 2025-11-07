@@ -6,6 +6,7 @@ import { CheckCircle2, AlertTriangle } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { GenericTable } from "@/components/ui/Table/data-table";
 import { EditFarmerDrawer } from "./components/EditFarmerDrawer";
+import { Dialog } from "@/components/ui/Dialog";
 import { useUpdateFarmer } from "@/utils/hooks/api/farmers/usePatchFarmer";
 import { useDeleteFarmer } from "@/utils/hooks/api/farmers/useDeleteFarmer";
 import { ActionButton } from "./types";
@@ -16,6 +17,8 @@ import type {
 
 export const FarmerBody = ({ data }: { data: Farmer[] }) => {
   const queryClient = useQueryClient();
+
+  const [openDialog, setOpenDialog] = useState(false);
   const [selectedFarmer, setSelectedFarmer] = useState<Farmer | null>(null);
   const [editDrawerOpen, setEditDrawerOpen] = useState(false);
 
@@ -50,6 +53,42 @@ export const FarmerBody = ({ data }: { data: Farmer[] }) => {
     setEditDrawerOpen(false);
   };
 
+  // Delete farmer mutation
+
+  const deleteFarmerMutation = useDeleteFarmer({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["farmers"] });
+      toast.success("Farmer deleted successfully!", {
+        icon: <CheckCircle2 className="h-5 w-5 text-green-500" />,
+      });
+    },
+
+    onError: (error) => {
+      console.error("Error deleting farmer:", error);
+      toast.error("Failed to delete farmer. Please try again.", {
+        icon: <AlertTriangle className="h-5 w-5 text-red-500" />,
+      });
+    },
+  });
+
+  const handleDeleteFarmer = async (farmerId: string) => {
+    await deleteFarmerMutation.mutateAsync(farmerId);
+  };
+
+  // Dialog logic
+  // --- Dialog Logic ---
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+    setSelectedFarmer(null);
+  };
+
+  const handleDialogConfirm = async () => {
+    if (selectedFarmer?._id) {
+      await handleDeleteFarmer(selectedFarmer._id);
+    }
+    handleDialogClose();
+  };
+
   const columns: ColumnDef<Farmer>[] = [
     {
       accessorKey: "name",
@@ -81,13 +120,12 @@ export const FarmerBody = ({ data }: { data: Farmer[] }) => {
         console.log("Viewing farmer:", row);
         break;
       case "edit":
-        console.log("Editing farmer:", row);
         setSelectedFarmer(row);
         setEditDrawerOpen(true);
         break;
       case "delete":
-        console.log("Deleting farmer:", row);
-        // Handle delete action
+        setSelectedFarmer(row);
+        setOpenDialog(true);
         break;
       default:
         return null;
@@ -114,6 +152,16 @@ export const FarmerBody = ({ data }: { data: Farmer[] }) => {
           onUpdate={handleUpdateFarmer}
         />
       )}
+      <Dialog
+        open={openDialog}
+        setOpen={setOpenDialog}
+        title="Cancel Form"
+        description={`Are you sure you want to delete ${
+          selectedFarmer?.name ?? "this farmer"
+        }? This action cannot be undone.`}
+        onConfirm={handleDialogConfirm}
+        onCancel={handleDialogClose}
+      />
     </>
   );
 };
