@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ROUTES } from "@/utils/routes";
-import { Home, Users2 } from "lucide-react";
+import { Home, Users2, Grid2x2X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function Sidebar() {
@@ -11,6 +11,7 @@ export default function Sidebar() {
   const menuItems = [
     { text: "Home", icon: Home, href: ROUTES.HOME },
     { text: "Farmers", icon: Users2, href: ROUTES.FARMERS },
+    { text: "Fields", icon: Grid2x2X, href: ROUTES.FIELDS },
   ];
 
   return (

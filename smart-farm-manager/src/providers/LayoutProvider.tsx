@@ -24,6 +24,9 @@ export default function LayoutProvider({ children }: { children: ReactNode }) {
     case ROUTES.FARMERS:
       title = "Farmers Management";
       break;
+    case ROUTES.FIELDS:
+      title = "Fields Management";
+      break;
     default:
       title = "";
       break;
