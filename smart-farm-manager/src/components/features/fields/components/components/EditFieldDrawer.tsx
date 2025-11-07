@@ -1,24 +1,22 @@
 "use client";
 
-import * as z from "zod";
-
 import { useState, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { CheckCircle2, AlertTriangle, Plus } from "lucide-react";
-import { SOIL_TYPES, FIELD_LOCATIONS } from "@/utils/constants";
-
-import { useAddField } from "@/utils/hooks/api/fields/usePostField";
 import { useFarmers } from "@/utils/hooks/api/farmers/useGetFarmers";
+
+import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Drawer } from "@/components/ui/Drawer";
 import { Dialog } from "@/components/ui/Dialog";
+
 import { Form, FormField } from "@/components/ui/Form/form";
 import { FormInputField } from "@/components/ui/Form/FormInputField";
 import { FormSelectField } from "@/components/ui/Form/FormSelectField";
+import { FIELD_LOCATIONS, SOIL_TYPES } from "@/utils/constants";
+
+import type { Field } from "@/utils/hooks/api/fields/types";
 
 const fieldSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -36,10 +34,20 @@ const fieldSchema = z.object({
 
 type FieldFormData = z.infer<typeof fieldSchema>;
 
-export const AddFieldDrawer = () => {
-  const [openDrawer, setOpenDrawer] = useState(false);
+interface EditFieldDrawerProps {
+  field: Field;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onUpdate?: (data: Field) => Promise<void>;
+}
+
+export const EditFieldDrawer = ({
+  field,
+  open,
+  onOpenChange,
+  onUpdate,
+}: EditFieldDrawerProps) => {
   const [openDialog, setOpenDialog] = useState(false);
-  const queryClient = useQueryClient();
 
   const { data: farmers } = useFarmers();
 
@@ -54,75 +62,71 @@ export const AddFieldDrawer = () => {
   const form = useForm<FieldFormData>({
     resolver: zodResolver(fieldSchema),
     defaultValues: {
-      name: "",
-      area: 1,
-      location: "",
-      soil_type: "Sandy",
-      farmer_id: "",
+      name: field.name,
+      area: field.area,
+      location: field.location,
+      soil_type: field.soil_type as
+        | "Sandy"
+        | "Clay"
+        | "Silt"
+        | "Peat"
+        | "Chalk"
+        | "Loam",
+      farmer_id: field.farmer_id as string,
     },
     mode: "all",
   });
 
-  const { watch, handleSubmit, reset, control, formState } = form;
-  const { isValid } = formState;
+  const { handleSubmit, reset, control, formState } = form;
+  const { isValid, isDirty } = formState;
 
-  const formValues = watch();
-  const isFormUpdated = useMemo(
-    () => Object.values(formValues).some((value) => value !== ""),
-    [formValues]
-  );
-
-  const addFieldMut = useAddField({
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["fields"] });
-      toast.success("Field added successfully!", {
-        icon: <CheckCircle2 className="h-5 w-5 text-green-500" />,
-      });
-    },
-
-    onError: (error) => {
-      console.error("Error creating field:", error);
-      toast.error("Failed to add field. Please try again.", {
-        icon: <AlertTriangle className="h-5 w-5 text-red-500" />,
-      });
-    },
-  });
-  const isSubmitDisabled =
-    !isValid || Object.keys(formValues).length === 0 || addFieldMut.isPending;
+  const isFormUpdated = useMemo(() => isDirty, [isDirty]);
 
   const onSubmit = async (data: FieldFormData) => {
-    try {
-      await addFieldMut.mutateAsync(data);
-      setOpenDrawer(false);
-      reset();
-    } catch (error) {
-      console.error("Error creating field:", error);
+    const updateData: Field = {
+      _id: field._id,
+      name: data.name,
+      area: data.area,
+      location: data.location,
+      soil_type: data.soil_type,
+      farmer_id: data.farmer_id,
+    };
+
+    if (onUpdate) {
+      await onUpdate(updateData);
     }
+
+    onOpenChange(false);
+    reset();
   };
 
   const onDialogConfirmCancel = () => {
     reset();
     setOpenDialog(false);
-    setOpenDrawer(false);
+    onOpenChange(false);
   };
 
   const handleCancel = () => {
-    if (isFormUpdated) setOpenDialog(true);
-    else {
-      setOpenDrawer(false);
+    if (isFormUpdated) {
+      setOpenDialog(true);
+    } else {
+      onOpenChange(false);
       reset();
     }
   };
 
   const toggleDrawerState = (isOpen: boolean) => {
-    if (isOpen) setOpenDrawer(true);
-    else handleCancel();
+    if (isOpen) {
+      onOpenChange(true);
+    } else {
+      handleCancel();
+    }
   };
 
   const renderDrawerFooter = () => (
     <>
-      <Button onClick={handleSubmit(onSubmit)} disabled={isSubmitDisabled}>
-        Submit
+      <Button onClick={handleSubmit(onSubmit)} disabled={!isValid}>
+        Update
       </Button>
       <Button variant="outline" onClick={handleCancel}>
         Cancel
@@ -133,15 +137,9 @@ export const AddFieldDrawer = () => {
   return (
     <>
       <Drawer
-        open={openDrawer}
+        open={open}
         onOpenChange={toggleDrawerState}
-        trigger={
-          <Button variant="outline">
-            <Plus className="h-4 w-4" />
-            Add Field
-          </Button>
-        }
-        title="Add New Field"
+        title="Edit Field"
         footer={renderDrawerFooter()}
         hideFooterCloseButton
       >
@@ -154,7 +152,6 @@ export const AddFieldDrawer = () => {
                 <FormInputField label="Name" required {...field} />
               )}
             />
-
             <FormField
               control={control}
               name="area"
@@ -217,7 +214,7 @@ export const AddFieldDrawer = () => {
       <Dialog
         open={openDialog}
         setOpen={setOpenDialog}
-        title="Cancel Form"
+        title="Cancel Changes"
         description="Are you sure you want to cancel? All changes will be lost."
         onConfirm={onDialogConfirmCancel}
         onCancel={() => setOpenDialog(false)}

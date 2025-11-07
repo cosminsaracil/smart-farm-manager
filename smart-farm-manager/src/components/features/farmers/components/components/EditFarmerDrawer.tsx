@@ -1,11 +1,8 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { CheckCircle2, AlertTriangle } from "lucide-react";
 
 import * as z from "zod";
 
@@ -42,7 +39,6 @@ export const EditFarmerDrawer = ({
   onUpdate,
 }: EditFarmerDrawerProps) => {
   const [openDialog, setOpenDialog] = useState(false);
-  const queryClient = useQueryClient();
 
   const form = useForm<FarmerFormData>({
     resolver: zodResolver(farmerSchema),

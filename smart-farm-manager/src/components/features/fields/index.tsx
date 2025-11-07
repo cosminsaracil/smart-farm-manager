@@ -1,7 +1,7 @@
 "use client";
 
 import { FieldsHeader } from "./components/FieldsHeader";
-// import { FarmerBody } from "./components/FarmerBody";
+import { FieldsBody } from "./components/FieldsBody";
 import ContentWrapper from "@/components/ui/content-wrapper";
 import { useGetFields } from "@/utils/hooks/api/fields/useGetFields";
 import { LoadingSpinner } from "@/components/ui/Spinner/Spiner";
@@ -9,6 +9,7 @@ import { ErrorPage } from "@/components/ui/Error/ErrorPage";
 
 export const FieldsDashboard = () => {
   const { data, isFetching, error, refetch } = useGetFields();
+  console.log("Fields data:", data);
 
   if (isFetching) return <LoadingSpinner />;
 
@@ -23,7 +24,7 @@ export const FieldsDashboard = () => {
   return (
     <ContentWrapper>
       <FieldsHeader />
-      {/* <FarmerBody data={data || []} /> */}
+      <FieldsBody data={data || []} />
     </ContentWrapper>
   );
 };

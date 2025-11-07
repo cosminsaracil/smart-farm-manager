@@ -75,7 +75,6 @@ export const FarmerBody = ({ data }: { data: Farmer[] }) => {
     await deleteFarmerMutation.mutateAsync(farmerId);
   };
 
-  // Dialog logic
   // --- Dialog Logic ---
   const handleDialogClose = () => {
     setOpenDialog(false);

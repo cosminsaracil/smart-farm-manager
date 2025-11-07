@@ -72,7 +72,6 @@ export const AddFarmerDrawer = () => {
 
   const onSubmit = async (data: FarmerFormData) => {
     try {
-      console.log("Submitting data:", data);
       await addFarmerMut.mutateAsync(data);
       setOpenDrawer(false);
       reset();
