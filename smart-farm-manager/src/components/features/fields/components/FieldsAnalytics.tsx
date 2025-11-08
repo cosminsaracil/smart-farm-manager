@@ -3,18 +3,18 @@ import { X, BarChart3, TrendingUp, MapPin, Users } from "lucide-react";
 import { ResponsiveBar } from "@nivo/bar";
 import { ResponsivePie } from "@nivo/pie";
 
-const COLORS = [
-  "#3b82f6",
-  "#10b981",
-  "#f59e0b",
-  "#ef4444",
-  "#8b5cf6",
-  "#ec4899",
-  "#06b6d4",
-  "#84cc16",
-];
+import { Button } from "@/components/ui/button";
+import { Select } from "@/components/ui/Select";
+import ContentWrapper from "@/components/ui/content-wrapper";
 
-export const FieldAnalytics = ({ fields, open, onClose }) => {
+import type { FieldsAnalyticsProps } from "./types";
+import { COLORS } from "@/utils/constants";
+
+export const FieldsAnalytics = ({
+  fields,
+  open,
+  onClose,
+}: FieldsAnalyticsProps) => {
   const [selectedLocation, setSelectedLocation] = useState("all");
   const [selectedSoilType, setSelectedSoilType] = useState("all");
   const [selectedFarmer, setSelectedFarmer] = useState("all");
@@ -152,21 +152,18 @@ export const FieldAnalytics = ({ fields, open, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-7xl max-h-[90vh] overflow-hidden flex flex-col">
+      <ContentWrapper className="bg-white rounded-lg shadow-xl w-full max-w-7xl max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <div className="flex items-center gap-3">
             <BarChart3 className="w-6 h-6 text-blue-600" />
             <h2 className="text-2xl font-bold text-gray-900">
-              Field Analytics Dashboard
+              Fields Analytics
             </h2>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
+          <Button onClick={onClose}>
             <X className="w-5 h-5" />
-          </button>
+          </Button>
         </div>
 
         {/* Content */}
@@ -469,7 +466,7 @@ export const FieldAnalytics = ({ fields, open, onClose }) => {
             </div>
           </div>
         </div>
-      </div>
+      </ContentWrapper>
     </div>
   );
 };

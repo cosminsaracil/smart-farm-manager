@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FieldsHeader } from "./components/FieldsHeader";
 import { FieldsBody } from "./components/FieldsBody";
-import { FieldAnalytics } from "./components/FieldsAnalytics";
+import { FieldsAnalytics } from "./components/FieldsAnalytics";
 import ContentWrapper from "@/components/ui/content-wrapper";
 import { useGetFields } from "@/utils/hooks/api/fields/useGetFields";
 import { LoadingSpinner } from "@/components/ui/Spinner/Spiner";
@@ -29,7 +29,7 @@ export const FieldsDashboard = () => {
     <ContentWrapper>
       <FieldsHeader onViewAnalytics={() => setAnalyticsOpen(true)} />
       <FieldsBody data={data || []} />
-      <FieldAnalytics
+      <FieldsAnalytics
         fields={data || []}
         open={analyticsOpen}
         onClose={() => setAnalyticsOpen(false)}
