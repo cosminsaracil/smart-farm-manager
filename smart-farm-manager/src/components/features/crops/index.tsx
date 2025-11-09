@@ -11,7 +11,6 @@ import { ErrorPage } from "@/components/ui/Error/ErrorPage";
 
 export const CropsDashboard = () => {
   const { data, isFetching, error, refetch } = useGetCrops();
-  console.log("Crops data:", data);
   const [analyticsOpen, setAnalyticsOpen] = useState(false);
 
   if (isFetching) return <LoadingSpinner />;
@@ -26,9 +25,13 @@ export const CropsDashboard = () => {
 
   return (
     <ContentWrapper>
-      <CropsHeader />
+      <CropsHeader onViewAnalytics={() => setAnalyticsOpen(true)} />
       <CropsBody data={data || []} />
-      {/* <CropsAnalytics data={data || []} /> */}
+      <CropsAnalytics
+        crops={data || []}
+        open={analyticsOpen}
+        onClose={() => setAnalyticsOpen(false)}
+      />
     </ContentWrapper>
   );
 };
