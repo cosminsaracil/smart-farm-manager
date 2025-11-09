@@ -25,9 +25,9 @@ export const FieldsAnalytics = ({
 
   // Extract unique values for filters
   const { locations, soilTypes, farmers } = useMemo(() => {
-    const locs = new Set();
-    const soils = new Set();
-    const farmersMap = new Map();
+    const locs = new Set<string>();
+    const soils = new Set<string>();
+    const farmersMap = new Map<string, string>();
 
     fields.forEach((field) => {
       locs.add(field.location);
@@ -66,8 +66,11 @@ export const FieldsAnalytics = ({
   // Calculate statistics
   const stats = useMemo(() => {
     // Top farmers by total area
-    const farmerAreas = new Map();
-    const farmerFieldCounts = new Map();
+    const farmerAreas = new Map<string, { name: string; totalArea: number }>();
+    const farmerFieldCounts = new Map<
+      string,
+      { name: string; count: number }
+    >();
 
     filteredFields.forEach((field) => {
       if (field.farmer_id && typeof field.farmer_id === "object") {
@@ -104,7 +107,7 @@ export const FieldsAnalytics = ({
       .map((f) => ({ farmer: f.name, "Field Count": f.count }));
 
     // Area by location
-    const locationAreas = new Map();
+    const locationAreas = new Map<string, number>();
     filteredFields.forEach((field) => {
       const current = locationAreas.get(field.location) || 0;
       locationAreas.set(field.location, current + field.area);
@@ -114,12 +117,14 @@ export const FieldsAnalytics = ({
       ([id, value]) => ({
         id,
         label: id,
-        value,
+        value: parseFloat(value.toFixed(1)),
       })
     );
 
+    console.log("Area by Location data:", areaByLocation);
+
     // Fields by soil type
-    const soilTypeCounts = new Map();
+    const soilTypeCounts = new Map<string, number>();
     filteredFields.forEach((field) => {
       const current = soilTypeCounts.get(field.soil_type) || 0;
       soilTypeCounts.set(field.soil_type, current + 1);

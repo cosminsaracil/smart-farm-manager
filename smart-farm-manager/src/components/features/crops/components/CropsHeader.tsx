@@ -7,20 +7,15 @@ import {
   ContentHeaderDescription,
 } from "@/components/ui/content-header";
 import { AddCropDrawer } from "./components/AddCropDrawer";
-import { Grid2X2Check, BarChart3 } from "lucide-react";
+import { Wheat } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-// interface CropsHeaderProps {
-//   onViewAnalytics: () => void;
-// }
-// { onViewAnalytics }: CropsHeaderProps
 
 export const CropsHeader = () => {
   return (
     <ContentHeader className="mb-8 border border-gray-300 dark:border-gray-600 shadow-sm flex-row items-center">
       <div className="flex flex-col gap-2 flex-1">
         <ContentHeaderTitle className="font-semibold text-foreground">
-          <Grid2X2Check className="h-5 w-5 text-primary" />
+          <Wheat className="h-5 w-5 text-primary" />
           Crop Overview
         </ContentHeaderTitle>
         <ContentHeaderDescription>
