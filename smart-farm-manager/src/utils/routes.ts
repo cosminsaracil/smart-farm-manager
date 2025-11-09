@@ -3,4 +3,5 @@ export const ROUTES = {
   FARMERS: "/farmers",
   FIELDS: "/fields",
   CROPS: "/crops",
+  ANIMALS: "/animals",
 };

@@ -121,8 +121,6 @@ export const FieldsAnalytics = ({
       })
     );
 
-    console.log("Area by Location data:", areaByLocation);
-
     // Fields by soil type
     const soilTypeCounts = new Map<string, number>();
     filteredFields.forEach((field) => {
