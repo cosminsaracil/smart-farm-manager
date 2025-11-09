@@ -2,13 +2,14 @@ import { useState, useMemo } from "react";
 import { X, BarChart3, TrendingUp, MapPin, Users } from "lucide-react";
 import { ResponsiveBar } from "@nivo/bar";
 import { ResponsivePie } from "@nivo/pie";
+import { useCurrentTheme } from "@/utils/hooks/useCurrentTheme";
 
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/Select";
-import ContentWrapper from "@/components/ui/content-wrapper";
+import { Card } from "@/components/ui/card";
 
 import type { FieldsAnalyticsProps } from "./types";
-import { COLORS } from "@/utils/constants";
+import { COLORS, NIVO_THEME_DARK, NIVO_THEME_LIGHT } from "@/utils/constants";
 
 export const FieldsAnalytics = ({
   fields,
@@ -18,6 +19,9 @@ export const FieldsAnalytics = ({
   const [selectedLocation, setSelectedLocation] = useState("all");
   const [selectedSoilType, setSelectedSoilType] = useState("all");
   const [selectedFarmer, setSelectedFarmer] = useState("all");
+
+  const theme = useCurrentTheme();
+  const isDarkMode = theme === "dark";
 
   // Extract unique values for filters
   const { locations, soilTypes, farmers } = useMemo(() => {
@@ -151,15 +155,13 @@ export const FieldsAnalytics = ({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-      <ContentWrapper className="bg-white rounded-lg shadow-xl w-full max-w-7xl max-h-[90vh] overflow-hidden flex flex-col">
+    <Card className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+      <Card className="rounded-lg shadow-xl w-full max-w-7xl max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <div className="flex items-center gap-3">
             <BarChart3 className="w-6 h-6 text-blue-600" />
-            <h2 className="text-2xl font-bold text-gray-900">
-              Fields Analytics
-            </h2>
+            <h2 className="text-2xl font-bold">Fields Analytics</h2>
           </div>
           <Button onClick={onClose}>
             <X className="w-5 h-5" />
@@ -169,71 +171,72 @@ export const FieldsAnalytics = ({
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6">
           {/* Filters */}
-          <div className="bg-gray-50 p-4 rounded-lg mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="p-4 rounded-lg mb-6 grid grid-cols-1 md:grid-cols-3 gap-4 border">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Location
+              <label className="block text-sm font-medium mb-1">
+                Location:
               </label>
-              <select
+              <Select
+                placeholder="All Locations"
                 value={selectedLocation}
-                onChange={(e) => setSelectedLocation(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="all">All Locations</option>
-                {locations.map((loc) => (
-                  <option key={loc} value={loc}>
-                    {loc}
-                  </option>
-                ))}
-              </select>
+                onChange={(value) => setSelectedLocation(value)}
+                options={[
+                  { value: "all", label: "All Locations" },
+                  ...locations.map((loc) => ({
+                    value: loc as string,
+                    label: loc as string,
+                  })),
+                ]}
+                fullWidth
+              />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Soil Type
+              <label className="block text-sm font-medium mb-1">
+                Soil Type:
               </label>
-              <select
+              <Select
+                placeholder="All Soil Types"
                 value={selectedSoilType}
-                onChange={(e) => setSelectedSoilType(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="all">All Soil Types</option>
-                {soilTypes.map((soil) => (
-                  <option key={soil} value={soil}>
-                    {soil}
-                  </option>
-                ))}
-              </select>
+                onChange={(value) => setSelectedSoilType(value)}
+                options={[
+                  { value: "all", label: "All Soil Types" },
+                  ...soilTypes.map((soil) => ({
+                    value: soil as string,
+                    label: soil as string,
+                  })),
+                ]}
+                fullWidth
+              />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Farmer
-              </label>
-              <select
+              <label className="block text-sm font-medium mb-1">Farmer:</label>
+              <Select
+                placeholder="All Farmers"
                 value={selectedFarmer}
-                onChange={(e) => setSelectedFarmer(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="all">All Farmers</option>
-                {farmers.map((farmer) => (
-                  <option key={farmer.id} value={farmer.id}>
-                    {farmer.name}
-                  </option>
-                ))}
-              </select>
+                onChange={(value) => setSelectedFarmer(value)}
+                options={[
+                  { value: "all", label: "All Farmers" },
+                  ...farmers.map((farmer) => ({
+                    value: farmer.id,
+                    label: farmer.name,
+                  })),
+                ]}
+                fullWidth
+              />
             </div>
           </div>
 
           {/* Summary Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+            <div className="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-blue-600 font-medium">
+                  <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">
                     Total Fields
                   </p>
-                  <p className="text-3xl font-bold text-blue-900 mt-1">
+                  <p className="text-3xl font-bold text-blue-900 dark:text-blue-100 mt-1">
                     {stats.totalFields}
                   </p>
                 </div>
@@ -241,13 +244,13 @@ export const FieldsAnalytics = ({
               </div>
             </div>
 
-            <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+            <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg border border-green-200 dark:border-green-800">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-green-600 font-medium">
+                  <p className="text-sm text-green-600 dark:text-green-400 font-medium">
                     Total Area
                   </p>
-                  <p className="text-3xl font-bold text-green-900 mt-1">
+                  <p className="text-3xl font-bold text-green-900 dark:text-green-100 mt-1">
                     {stats.totalArea.toFixed(1)} ha
                   </p>
                 </div>
@@ -255,13 +258,13 @@ export const FieldsAnalytics = ({
               </div>
             </div>
 
-            <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+            <div className="bg-purple-50 dark:bg-purple-900 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-purple-600 font-medium">
+                  <p className="text-sm text-purple-600 dark:text-purple-400 font-medium">
                     Avg Field Size
                   </p>
-                  <p className="text-3xl font-bold text-purple-900 mt-1">
+                  <p className="text-3xl font-bold text-purple-900 dark:text-purple-100 mt-1">
                     {stats.avgFieldSize.toFixed(1)} ha
                   </p>
                 </div>
@@ -273,9 +276,9 @@ export const FieldsAnalytics = ({
           {/* Charts Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Top Farmers by Total Area */}
-            <div className="bg-white p-4 rounded-lg border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Top Farmers by Total Area
+            <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                Top farmers by total area
               </h3>
               <div style={{ height: 300 }}>
                 {stats.topFarmersByArea.length > 0 ? (
@@ -286,7 +289,8 @@ export const FieldsAnalytics = ({
                     margin={{ top: 10, right: 20, bottom: 80, left: 60 }}
                     padding={0.3}
                     valueScale={{ type: "linear" }}
-                    colors={["#3b82f6"]}
+                    colors={isDarkMode ? ["#60a5fa"] : ["#3b82f6"]}
+                    theme={isDarkMode ? NIVO_THEME_DARK : NIVO_THEME_LIGHT}
                     axisBottom={{
                       tickSize: 5,
                       tickPadding: 5,
@@ -306,15 +310,15 @@ export const FieldsAnalytics = ({
                     labelSkipWidth={12}
                     labelSkipHeight={12}
                     enableLabel={false}
-                    tooltip={({ id, value, indexValue }) => (
-                      <div className="bg-white px-3 py-2 shadow-lg rounded border border-gray-200">
+                    tooltip={({ value, indexValue }) => (
+                      <div className="bg-white dark:bg-gray-800 px-3 py-2 shadow-lg rounded border border-gray-200">
                         <strong>{indexValue}</strong>
                         <div>{value.toFixed(1)} ha</div>
                       </div>
                     )}
                   />
                 ) : (
-                  <div className="flex items-center justify-center h-full text-gray-400">
+                  <div className="flex items-center justify-center h-full text-gray-400 dark:text-gray-500">
                     No data available
                   </div>
                 )}
@@ -322,9 +326,9 @@ export const FieldsAnalytics = ({
             </div>
 
             {/* Top Farmers by Field Count */}
-            <div className="bg-white p-4 rounded-lg border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Top Farmers by Field Count
+            <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                Top Farmers by field count
               </h3>
               <div style={{ height: 300 }}>
                 {stats.topFarmersByFieldCount.length > 0 ? (
@@ -335,7 +339,8 @@ export const FieldsAnalytics = ({
                     margin={{ top: 10, right: 20, bottom: 80, left: 60 }}
                     padding={0.3}
                     valueScale={{ type: "linear" }}
-                    colors={["#10b981"]}
+                    colors={isDarkMode ? ["#22c55e"] : ["#10b981"]}
+                    theme={isDarkMode ? NIVO_THEME_DARK : NIVO_THEME_LIGHT}
                     axisBottom={{
                       tickSize: 5,
                       tickPadding: 5,
@@ -355,15 +360,15 @@ export const FieldsAnalytics = ({
                     labelSkipWidth={12}
                     labelSkipHeight={12}
                     enableLabel={false}
-                    tooltip={({ id, value, indexValue }) => (
-                      <div className="bg-white px-3 py-2 shadow-lg rounded border border-gray-200">
+                    tooltip={({ value, indexValue }) => (
+                      <div className="bg-white dark:bg-gray-800 px-3 py-2 shadow-lg rounded border border-gray-200 dark:border-gray-700">
                         <strong>{indexValue}</strong>
                         <div>{value} fields</div>
                       </div>
                     )}
                   />
                 ) : (
-                  <div className="flex items-center justify-center h-full text-gray-400">
+                  <div className="flex items-center justify-center h-full text-gray-400 dark:text-gray-500">
                     No data available
                   </div>
                 )}
@@ -371,9 +376,9 @@ export const FieldsAnalytics = ({
             </div>
 
             {/* Area by Location */}
-            <div className="bg-white p-4 rounded-lg border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Area Distribution by Location
+            <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                Area distribution by location
               </h3>
               <div style={{ height: 300 }}>
                 {stats.areaByLocation.length > 0 ? (
@@ -385,22 +390,23 @@ export const FieldsAnalytics = ({
                     cornerRadius={3}
                     activeOuterRadiusOffset={8}
                     colors={COLORS}
+                    theme={isDarkMode ? NIVO_THEME_DARK : NIVO_THEME_LIGHT}
                     borderWidth={1}
                     borderColor={{
                       from: "color",
-                      modifiers: [["darker", 0.2]],
+                      modifiers: [["darker", isDarkMode ? 0.8 : 0.4]],
                     }}
                     arcLinkLabelsSkipAngle={10}
-                    arcLinkLabelsTextColor="#333333"
+                    arcLinkLabelsTextColor={isDarkMode ? "#e5e7eb" : "#374151"}
                     arcLinkLabelsThickness={2}
                     arcLinkLabelsColor={{ from: "color" }}
                     arcLabelsSkipAngle={10}
                     arcLabelsTextColor={{
                       from: "color",
-                      modifiers: [["darker", 2]],
+                      modifiers: [["darker", isDarkMode ? 2 : 1.6]],
                     }}
                     tooltip={({ datum }) => (
-                      <div className="bg-white px-3 py-2 shadow-lg rounded border border-gray-200">
+                      <div className="bg-white dark:bg-gray-800 px-3 py-2 shadow-lg rounded border border-gray-200 dark:border-gray-700">
                         <strong>{datum.label}</strong>
                         <div>
                           {datum.value.toFixed(1)} ha (
@@ -418,9 +424,9 @@ export const FieldsAnalytics = ({
             </div>
 
             {/* Fields by Soil Type */}
-            <div className="bg-white p-4 rounded-lg border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Fields by Soil Type
+            <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                Fields by soil type
               </h3>
               <div style={{ height: 300 }}>
                 {stats.fieldsBySoilType.length > 0 ? (
@@ -432,22 +438,23 @@ export const FieldsAnalytics = ({
                     cornerRadius={3}
                     activeOuterRadiusOffset={8}
                     colors={COLORS}
+                    theme={isDarkMode ? NIVO_THEME_DARK : NIVO_THEME_LIGHT}
                     borderWidth={1}
                     borderColor={{
                       from: "color",
-                      modifiers: [["darker", 0.2]],
+                      modifiers: [["darker", isDarkMode ? 0.8 : 0.4]],
                     }}
                     arcLinkLabelsSkipAngle={10}
-                    arcLinkLabelsTextColor="#333333"
+                    arcLinkLabelsTextColor={isDarkMode ? "#e5e7eb" : "#374151"}
                     arcLinkLabelsThickness={2}
                     arcLinkLabelsColor={{ from: "color" }}
                     arcLabelsSkipAngle={10}
                     arcLabelsTextColor={{
                       from: "color",
-                      modifiers: [["darker", 2]],
+                      modifiers: [["darker", isDarkMode ? 2 : 1.6]],
                     }}
                     tooltip={({ datum }) => (
-                      <div className="bg-white px-3 py-2 shadow-lg rounded border border-gray-200">
+                      <div className="bg-white dark:bg-gray-800 px-3 py-2 shadow-lg rounded border border-gray-200 dark:border-gray-700">
                         <strong>{datum.label}</strong>
                         <div>
                           {datum.value} fields (
@@ -466,7 +473,7 @@ export const FieldsAnalytics = ({
             </div>
           </div>
         </div>
-      </ContentWrapper>
-    </div>
+      </Card>
+    </Card>
   );
 };
