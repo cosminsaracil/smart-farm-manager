@@ -19,13 +19,18 @@ import { FormInputField } from "@/components/ui/Form/FormInputField";
 import { FormSelectField } from "@/components/ui/Form/FormSelectField";
 import { DateTimePicker } from "@/components/ui/datetime-picker";
 
-const cropSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  type: z.string().min(1, "Type is required"),
-  planting_date: z.date({ message: "Planting date is required" }),
-  harvest_date: z.date({ message: "Harvest date is required" }),
-  field_id: z.string().min(1, "Field ID is required"),
-});
+const cropSchema = z
+  .object({
+    name: z.string().min(1, "Name is required"),
+    type: z.string().min(1, "Type is required"),
+    planting_date: z.date({ message: "Planting date is required" }),
+    harvest_date: z.date({ message: "Harvest date is required" }),
+    field_id: z.string().min(1, "Field ID is required"),
+  })
+  .refine((data) => data.harvest_date > data.planting_date, {
+    message: "Harvest date must be after planting date",
+    path: ["harvest_date"],
+  });
 
 type CropFormData = z.infer<typeof cropSchema>;
 
@@ -56,14 +61,8 @@ export const AddCropDrawer = () => {
     mode: "all",
   });
 
-  const { watch, handleSubmit, reset, control, formState } = form;
-  const { isValid } = formState;
-
-  const formValues = watch();
-  const isFormUpdated = useMemo(
-    () => Object.values(formValues).some((value) => value !== ""),
-    [formValues]
-  );
+  const { handleSubmit, reset, control, formState } = form;
+  const { isValid, isDirty } = formState;
 
   const addCropMut = useAddCrop({
     onSuccess: () => {
@@ -81,12 +80,8 @@ export const AddCropDrawer = () => {
     },
   });
 
-  const isSubmitDisabled =
-    !isValid || Object.keys(formValues).length === 0 || addCropMut.isPending;
-
   const onSubmit = async (data: CropFormData) => {
     try {
-      // Convert dates to ISO before sending to API
       const payload = {
         ...data,
         planting_date: data.planting_date.toISOString(),
@@ -107,21 +102,29 @@ export const AddCropDrawer = () => {
   };
 
   const handleCancel = () => {
-    if (isFormUpdated) setOpenDialog(true);
-    else {
+    if (isDirty) {
+      setOpenDialog(true);
+    } else {
       setOpenDrawer(false);
       reset();
     }
   };
 
   const toggleDrawerState = (isOpen: boolean) => {
-    if (isOpen) setOpenDrawer(true);
-    else handleCancel();
+    if (isOpen) {
+      setOpenDrawer(true);
+    } else {
+      handleCancel();
+    }
   };
 
   const renderDrawerFooter = () => (
     <>
-      <Button onClick={handleSubmit(onSubmit)} disabled={isSubmitDisabled}>
+      <Button
+        type="submit"
+        form="crop-form"
+        disabled={!isValid || addCropMut.isPending}
+      >
         Submit
       </Button>
       <Button variant="outline" onClick={handleCancel}>
@@ -146,7 +149,11 @@ export const AddCropDrawer = () => {
         hideFooterCloseButton
       >
         <Form {...form}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            id="crop-form"
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-4"
+          >
             {/* Crop name */}
             <FormField
               control={control}
