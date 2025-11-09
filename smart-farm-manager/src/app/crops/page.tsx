@@ -4,7 +4,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { getAllCrops } from "@/utils/hooks/api/crops/useGetCrops";
-// import { FieldsDashboard } from "@/components/features/fields";
+import { CropsDashboard } from "@/components/features/crops";
 export default async function Crops() {
   const queryClient = new QueryClient();
 
@@ -16,8 +16,7 @@ export default async function Crops() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      {/* <FieldsDashboard /> */}
-      <h1>helllo</h1>
+      <CropsDashboard />
     </HydrationBoundary>
   );
 }

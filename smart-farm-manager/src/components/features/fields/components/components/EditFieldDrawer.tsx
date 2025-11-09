@@ -17,6 +17,7 @@ import { FormSelectField } from "@/components/ui/Form/FormSelectField";
 import { FIELD_LOCATIONS, SOIL_TYPES } from "@/utils/constants";
 
 import type { Field } from "@/utils/hooks/api/fields/types";
+import type { EditFieldDrawerProps } from "../types";
 
 const fieldSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -33,13 +34,6 @@ const fieldSchema = z.object({
 });
 
 type FieldFormData = z.infer<typeof fieldSchema>;
-
-interface EditFieldDrawerProps {
-  field: Field;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onUpdate?: (data: Field) => Promise<void>;
-}
 
 export const EditFieldDrawer = ({
   field,

@@ -15,6 +15,7 @@ import { FormInputField } from "@/components/ui/Form/FormInputField";
 import { FormSelectField } from "@/components/ui/Form/FormSelectField";
 
 import type { Farmer } from "@/utils/hooks/api/farmers/types";
+import type { EditFarmerDrawerProps } from "../types";
 
 const farmerSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -24,13 +25,6 @@ const farmerSchema = z.object({
 });
 
 type FarmerFormData = z.infer<typeof farmerSchema>;
-
-interface EditFarmerDrawerProps {
-  farmer: Farmer;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onUpdate?: (data: Farmer) => Promise<void>;
-}
 
 export const EditFarmerDrawer = ({
   farmer,

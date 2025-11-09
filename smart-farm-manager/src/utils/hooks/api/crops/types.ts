@@ -10,7 +10,7 @@ export type Crop = {
   __v?: number;
 };
 
-export type CropPayload = Omit<Field, "_id" | "__v">;
+export type CropPayload = Omit<Crop, "_id" | "__v">;
 
 export type UpdateCropPayload = {
   id: string;

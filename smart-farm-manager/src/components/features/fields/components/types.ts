@@ -10,3 +10,14 @@ export type FieldsAnalyticsProps = {
   open: boolean;
   onClose: () => void;
 };
+
+export type FieldsHeaderProps = {
+  onViewAnalytics: () => void;
+};
+
+export type EditFieldDrawerProps = {
+  field: Field;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onUpdate?: (data: Field) => Promise<void>;
+};
