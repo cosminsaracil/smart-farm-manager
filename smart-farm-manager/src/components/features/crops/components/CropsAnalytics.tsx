@@ -15,8 +15,8 @@ import {
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Select } from "@/components/ui/Select";
 
-import type { Crop } from "@/utils/hooks/api/crops/types";
 import type { CropsAnalyticsProps } from "./types";
 import { COLORS, NIVO_THEME_DARK, NIVO_THEME_LIGHT } from "@/utils/constants";
 
@@ -253,108 +253,112 @@ export const CropsAnalytics = ({
           </Button>
         </div>
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6 gap-6 space-y-6">
           {/* Filters Section */}
-          <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+          <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700 ">
             <div className="flex items-center gap-2 mb-4">
-              <Filter className="w-5 h-5 text-blue-400" />
-              <h3 className="text-lg font-semibold text-white">
-                Filters & Sorting
-              </h3>
+              <Filter className="w-5 h-5 text-blue-600" />
+              <h3 className="text-lg font-semibold">Filters & Sorting</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               <div>
-                <label className="block text-sm text-gray-400 mb-1">
+                <label className="block text-sm text-gray-400 dark:text-gray-300 mb-1">
                   Crop Type
                 </label>
-                <select
+                <Select
+                  placeholder="All crops types"
                   value={filters.cropType}
-                  onChange={(e) =>
-                    setFilters({ ...filters, cropType: e.target.value })
+                  onChange={(value) =>
+                    setFilters({ ...filters, cropType: value })
                   }
-                  className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
-                >
-                  <option value="all">All Types</option>
-                  {filterOptions.types.map((type) => (
-                    <option key={type} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </select>
+                  options={[
+                    { value: "all", label: "All Crop Types" },
+                    ...filterOptions.types.map((type) => ({
+                      value: type,
+                      label: type,
+                    })),
+                  ]}
+                  fullWidth
+                />
               </div>
-
               <div>
-                <label className="block text-sm text-gray-400 mb-1">
+                <label className="block text-sm text-gray-400 dark:text-gray-300 mb-1">
                   Location
                 </label>
-                <select
+                <Select
+                  placeholder="All locations"
                   value={filters.location}
-                  onChange={(e) =>
-                    setFilters({ ...filters, location: e.target.value })
+                  onChange={(value) =>
+                    setFilters({ ...filters, location: value })
                   }
-                  className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
-                >
-                  <option value="all">All Locations</option>
-                  {filterOptions.locations.map((loc) => (
-                    <option key={loc} value={loc}>
-                      {loc}
-                    </option>
-                  ))}
-                </select>
+                  options={[
+                    { value: "all", label: "All Locations" },
+                    ...filterOptions.locations.map((loc) => ({
+                      value: loc,
+                      label: loc,
+                    })),
+                  ]}
+                  fullWidth
+                />
               </div>
 
               <div>
-                <label className="block text-sm text-gray-400 mb-1">
-                  Soil Type
+                <label className="block text-sm text-gray-400 dark:text-gray-300 mb-1">
+                  Soil type
                 </label>
-                <select
+                <Select
+                  placeholder="All soil types"
                   value={filters.soilType}
-                  onChange={(e) =>
-                    setFilters({ ...filters, soilType: e.target.value })
+                  onChange={(value) =>
+                    setFilters({ ...filters, soilType: value })
                   }
-                  className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
-                >
-                  <option value="all">All Soils</option>
-                  {filterOptions.soils.map((soil) => (
-                    <option key={soil} value={soil}>
-                      {soil}
-                    </option>
-                  ))}
-                </select>
+                  options={[
+                    { value: "all", label: "All Soil Types" },
+                    ...filterOptions.soils.map((soil) => ({
+                      value: soil,
+                      label: soil,
+                    })),
+                  ]}
+                  fullWidth
+                />
               </div>
 
               <div>
-                <label className="block text-sm text-gray-400 mb-1">
+                <label className="block text-sm text-gray-400 dark:text-gray-300 mb-1">
                   Status
                 </label>
-                <select
+                <Select
+                  placeholder="All statuses"
                   value={filters.status}
-                  onChange={(e) =>
-                    setFilters({ ...filters, status: e.target.value })
+                  onChange={(value) =>
+                    setFilters({ ...filters, status: value })
                   }
-                  className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
-                >
-                  <option value="all">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="harvested">Harvested</option>
-                  <option value="planned">Planned</option>
-                </select>
+                  options={[
+                    { value: "all", label: "All Statuses" },
+                    { value: "active", label: "Active" },
+                    { value: "harvested", label: "Harvested" },
+                    { value: "planned", label: "Planned" },
+                  ]}
+                  fullWidth
+                />
               </div>
 
               <div>
-                <label className="block text-sm text-gray-400 mb-1">
+                <label className="block text-sm text-gray-400 dark:text-gray-300 mb-1">
                   Sort By
                 </label>
-                <select
+                <Select
+                  placeholder="Sort by"
                   value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
-                >
-                  <option value="name">Name</option>
-                  <option value="area">Area (Largest)</option>
-                  <option value="planting_date">Planting Date</option>
-                </select>
+                  onChange={(value) => setSortBy(value)}
+                  options={[
+                    { value: "name", label: "Name" },
+                    { value: "area", label: "Area (Largest)" },
+                    { value: "planting_date", label: "Planting Date" },
+                  ]}
+                  fullWidth
+                />
               </div>
             </div>
           </div>
@@ -362,52 +366,58 @@ export const CropsAnalytics = ({
           {/* Statistics Cards */}
           {statistics && (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-2 mb-2">
                   <Sprout className="w-4 h-4 text-green-400" />
-                  <span className="text-sm text-gray-400">Total Crops</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    Total Crops
+                  </span>
                 </div>
-                <p className="text-2xl font-bold text-white">
-                  {statistics.total}
-                </p>
+                <p className="text-2xl font-bold">{statistics.total}</p>
               </div>
 
-              <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-2 mb-2">
                   <TrendingUp className="w-4 h-4 text-blue-400" />
-                  <span className="text-sm text-gray-400">Total Area</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    Total Area
+                  </span>
                 </div>
-                <p className="text-2xl font-bold text-white">
-                  {statistics.totalArea} ha
-                </p>
+                <p className="text-2xl font-bold ">{statistics.totalArea} ha</p>
               </div>
 
-              <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-2 mb-2">
                   <Calendar className="w-4 h-4 text-purple-400" />
-                  <span className="text-sm text-gray-400">Avg Area</span>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    Avg Area
+                  </span>
                 </div>
-                <p className="text-2xl font-bold text-white">
-                  {statistics.avgArea} ha
-                </p>
+                <p className="text-2xl font-bold ">{statistics.avgArea} ha</p>
               </div>
 
-              <div className="bg-gray-800 rounded-lg p-4 border border-green-700 bg-green-900/20">
-                <span className="text-sm text-gray-400">Active</span>
+              <div className="bg-white bg-gray-900 rounded-lg p-4 border border-green-200 dark:border-green-700 bg-green-900/20 dark:bg-green-900/20 ">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Active
+                </span>
                 <p className="text-2xl font-bold text-green-400">
                   {statistics.active}
                 </p>
               </div>
 
               <div className="bg-gray-800 rounded-lg p-4 border border-blue-700 bg-blue-900/20">
-                <span className="text-sm text-gray-400">Harvested</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Harvested
+                </span>
                 <p className="text-2xl font-bold text-blue-400">
                   {statistics.harvested}
                 </p>
               </div>
 
               <div className="bg-gray-800 rounded-lg p-4 border border-yellow-700 bg-yellow-900/20">
-                <span className="text-sm text-gray-400">Planned</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Planned
+                </span>
                 <p className="text-2xl font-bold text-yellow-400">
                   {statistics.planned}
                 </p>
@@ -592,6 +602,7 @@ export const CropsAnalytics = ({
                     <th className="pb-3 font-medium">Area (ha)</th>
                     <th className="pb-3 font-medium">Soil</th>
                     <th className="pb-3 font-medium">Planted</th>
+                    <th className="pb-3 font-medium">Harvested</th>
                     <th className="pb-3 font-medium">Status</th>
                   </tr>
                 </thead>
@@ -647,6 +658,11 @@ export const CropsAnalytics = ({
                         </td>
                         <td className="py-3">
                           {new Date(crop.planting_date).toLocaleDateString()}
+                        </td>
+                        <td className="py-3">
+                          {crop.harvest_date
+                            ? new Date(crop.harvest_date).toLocaleDateString()
+                            : "Not set"}
                         </td>
                         <td className={`py-3 font-medium ${statusColor}`}>
                           {status}
