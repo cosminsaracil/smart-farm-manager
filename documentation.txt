@@ -94,7 +94,7 @@ De exemplu, în Fields salvăm farmer_id (ObjectId al fermierului), iar în Crop
 
 1. Modelul de date (baza de date — minim 6 entități)
 
-- următoarele 6 entități principale (logice pentru un ERP de fermă):
+- următoarele 6 entități principale (logice pentru un ERP):
 
 | Entitate      | Descriere                                     | Exemple de câmpuri                                            |
 | ------------- | --------------------------------------------- | ------------------------------------------------------------- |
@@ -130,12 +130,23 @@ Vor exista 4 pagini de raportare, unde combinăm date din mai multe entități:
 | **2️⃣ Animal Health Report**    | Starea de sănătate a animalelor                  | `animals`             |
 | **3️⃣ Equipment Status Report** | Situația utilajelor funcționale și în mentenanță | `equipment`           |
 | **4️⃣ Task Overview**           | Activități planificate și executanți             | `tasks` + `farmers`   |
+| **5️⃣ Fields Report **          | Parcele de teren din fermă în funcție de fermieri| `fields` + `farmers`  |
 
-- Se vor adăuga grafice (cu Apache ECharts sau Chart.js) pentru a le face vizuale și interactive.
+Details:
+
+5️⃣ Fields Report
+FieldsAnalytics component:
+- Integrates 2 entities (fields + farmers)
+- Offers interactive filters (by location, soil type, and farmer)
+- Provides computed statistics (totals, averages, top performers)
+- Contains visualizations (4 different charts with Nivo)
+- Displays summary KPIs ( total area, total fields, average field size)
+
+- Se vor adăuga grafice  pentru a le face vizuale și interactive.
 
 4. Ordinea de implementare
 
-- Farmers CRUD — deja aproape complet
+- Farmers CRUD 
 - Fields CRUD
 - Crops CRUD (cu legătură la Field)
 - Animals CRUD

@@ -13,8 +13,6 @@ export const FieldsDashboard = () => {
   const { data, isFetching, error, refetch } = useGetFields();
   const [analyticsOpen, setAnalyticsOpen] = useState(false);
 
-  console.log("Fields data:", data);
-
   if (isFetching) return <LoadingSpinner />;
 
   if (error)

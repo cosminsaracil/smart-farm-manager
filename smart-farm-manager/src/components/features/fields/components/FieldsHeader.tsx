@@ -16,8 +16,8 @@ interface FieldsHeaderProps {
 
 export const FieldsHeader = ({ onViewAnalytics }: FieldsHeaderProps) => {
   return (
-    <ContentHeader className="mb-8 border border-gray-300 dark:border-gray-600 shadow-sm">
-      <div className="flex flex-col gap-2">
+    <ContentHeader className="mb-8 border border-gray-300 dark:border-gray-600 shadow-sm flex-row items-center">
+      <div className="flex flex-col gap-2 flex-1">
         <ContentHeaderTitle className="font-semibold text-foreground">
           <Grid2X2Check className="h-5 w-5 text-primary" />
           Farm Field Overview
@@ -27,7 +27,7 @@ export const FieldsHeader = ({ onViewAnalytics }: FieldsHeaderProps) => {
           growth, and optimize farm operations for better yields.
         </ContentHeaderDescription>
       </div>
-      <ContentHeaderContent className="gap-2">
+      <ContentHeaderContent className="flex flex-row gap-2 items-center flex-shrink-0">
         <Button variant="outline" onClick={onViewAnalytics} className="gap-2">
           <BarChart3 className="h-4 w-4" />
           View Analytics
