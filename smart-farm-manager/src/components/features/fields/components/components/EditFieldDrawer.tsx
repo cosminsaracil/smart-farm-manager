@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFarmers } from "@/utils/hooks/api/farmers/useGetFarmers";
@@ -35,6 +35,11 @@ const fieldSchema = z.object({
 
 type FieldFormData = z.infer<typeof fieldSchema>;
 
+// Helper function to extract farmer_id as string
+const getFarmerId = (farmerId: string | { _id: string; name: string }) => {
+  return typeof farmerId === "object" ? farmerId._id : farmerId;
+};
+
 export const EditFieldDrawer = ({
   field,
   open,
@@ -66,7 +71,7 @@ export const EditFieldDrawer = ({
         | "Peat"
         | "Chalk"
         | "Loam",
-      farmer_id: field.farmer_id as string,
+      farmer_id: getFarmerId(field.farmer_id),
     },
     mode: "all",
   });
@@ -75,6 +80,25 @@ export const EditFieldDrawer = ({
   const { isValid, isDirty } = formState;
 
   const isFormUpdated = useMemo(() => isDirty, [isDirty]);
+
+  // Reset form when field changes or drawer opens
+  useEffect(() => {
+    if (open && field) {
+      reset({
+        name: field.name,
+        area: field.area,
+        location: field.location,
+        soil_type: field.soil_type as
+          | "Sandy"
+          | "Clay"
+          | "Silt"
+          | "Peat"
+          | "Chalk"
+          | "Loam",
+        farmer_id: getFarmerId(field.farmer_id),
+      });
+    }
+  }, [open, field, reset]);
 
   const onSubmit = async (data: FieldFormData) => {
     const updateData: Field = {
@@ -91,7 +115,6 @@ export const EditFieldDrawer = ({
     }
 
     onOpenChange(false);
-    reset();
   };
 
   const onDialogConfirmCancel = () => {

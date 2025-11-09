@@ -1,18 +1,16 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useGetFields } from "@/utils/hooks/api/fields/useGetFields";
 import dayjs from "dayjs";
-
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Drawer } from "@/components/ui/Drawer";
 import { Dialog } from "@/components/ui/Dialog";
 import { DateTimePicker } from "@/components/ui/datetime-picker";
-
 import { Form, FormField } from "@/components/ui/Form/form";
 import { FormInputField } from "@/components/ui/Form/FormInputField";
 import { FormSelectField } from "@/components/ui/Form/FormSelectField";
@@ -42,7 +40,6 @@ export const EditCropDrawer = ({
   onUpdate,
 }: EditCropDrawerProps) => {
   const [openDialog, setOpenDialog] = useState(false);
-
   const { data: fields } = useGetFields();
 
   const fieldsOptions = useMemo(() => {
@@ -53,6 +50,11 @@ export const EditCropDrawer = ({
     }));
   }, [fields]);
 
+  // Helper function to extract field_id as string
+  const getFieldId = (fieldId: string | { _id: string; name: string }) => {
+    return typeof fieldId === "object" ? fieldId._id : fieldId;
+  };
+
   const form = useForm<CropFormData>({
     resolver: zodResolver(cropSchema),
     defaultValues: {
@@ -60,7 +62,7 @@ export const EditCropDrawer = ({
       type: crop.type,
       planting_date: dayjs(crop.planting_date).toDate(),
       harvest_date: dayjs(crop.harvest_date).toDate(),
-      field_id: crop.field_id as string,
+      field_id: getFieldId(crop.field_id),
     },
     mode: "all",
   });
@@ -69,6 +71,19 @@ export const EditCropDrawer = ({
   const { isValid, isDirty } = formState;
 
   const isFormUpdated = useMemo(() => isDirty, [isDirty]);
+
+  // Reset form when crop changes or drawer opens
+  useEffect(() => {
+    if (open && crop) {
+      reset({
+        name: crop.name,
+        type: crop.type,
+        planting_date: dayjs(crop.planting_date).toDate(),
+        harvest_date: dayjs(crop.harvest_date).toDate(),
+        field_id: getFieldId(crop.field_id),
+      });
+    }
+  }, [open, crop, reset]);
 
   const onSubmit = async (data: CropFormData) => {
     const updateData: Crop = {
@@ -83,9 +98,7 @@ export const EditCropDrawer = ({
     if (onUpdate) {
       await onUpdate(updateData);
     }
-
     onOpenChange(false);
-    reset();
   };
 
   const onDialogConfirmCancel = () => {

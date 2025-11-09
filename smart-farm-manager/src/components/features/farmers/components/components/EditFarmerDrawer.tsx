@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -50,6 +50,18 @@ export const EditFarmerDrawer = ({
 
   const isFormUpdated = useMemo(() => isDirty, [isDirty]);
 
+  // Reset form when farmer changes or drawer opens
+  useEffect(() => {
+    if (open && farmer) {
+      reset({
+        name: farmer.name,
+        email: farmer.email,
+        password: "",
+        role: farmer.role,
+      });
+    }
+  }, [open, farmer, reset]);
+
   const onSubmit = async (data: FarmerFormData) => {
     const updateData: Farmer = {
       _id: farmer._id,
@@ -64,7 +76,6 @@ export const EditFarmerDrawer = ({
     }
 
     onOpenChange(false);
-    reset();
   };
 
   const onDialogConfirmCancel = () => {
