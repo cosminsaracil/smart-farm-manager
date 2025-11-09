@@ -396,7 +396,7 @@ export const CropsAnalytics = ({
                 <p className="text-2xl font-bold ">{statistics.avgArea} ha</p>
               </div>
 
-              <div className="bg-white bg-gray-900 rounded-lg p-4 border border-green-200 dark:border-green-700 bg-green-900/20 dark:bg-green-900/20 ">
+              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-green-200 dark:border-green-700 bg-green-900/20  flex flex-col items-center justify-center text-center">
                 <span className="text-sm text-gray-600 dark:text-gray-400">
                   Active
                 </span>
@@ -405,7 +405,7 @@ export const CropsAnalytics = ({
                 </p>
               </div>
 
-              <div className="bg-gray-800 rounded-lg p-4 border border-blue-700 bg-blue-900/20">
+              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-blue-200 dark:border-blue-700 bg-blue-900/20 flex flex-col items-center justify-center text-center">
                 <span className="text-sm text-gray-600 dark:text-gray-400">
                   Harvested
                 </span>
@@ -414,7 +414,7 @@ export const CropsAnalytics = ({
                 </p>
               </div>
 
-              <div className="bg-gray-800 rounded-lg p-4 border border-yellow-700 bg-yellow-900/20">
+              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-yellow-200  dark:border-yellow-700  dark:bg-yellow-900/20 flex flex-col items-center justify-center text-center">
                 <span className="text-sm text-gray-600 dark:text-gray-400">
                   Planned
                 </span>
@@ -428,9 +428,9 @@ export const CropsAnalytics = ({
           {/* Charts Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Crop Type Distribution */}
-            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-              <h3 className="text-lg font-semibold text-white mb-4">
-                Crop Type Distribution
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-semibold  mb-4">
+                Crop type distribution
               </h3>
               <div className="h-80">
                 <ResponsivePie
@@ -440,23 +440,29 @@ export const CropsAnalytics = ({
                   padAngle={0.7}
                   cornerRadius={3}
                   activeOuterRadiusOffset={8}
-                  colors={{ datum: "data.color" }}
+                  colors={COLORS}
+                  theme={isDarkMode ? NIVO_THEME_DARK : NIVO_THEME_LIGHT}
                   borderWidth={1}
-                  borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
+                  borderColor={{
+                    from: "color",
+                    modifiers: [["darker", isDarkMode ? 0.8 : 0.4]],
+                  }}
                   arcLinkLabelsSkipAngle={10}
-                  arcLinkLabelsTextColor="#9ca3af"
+                  arcLinkLabelsTextColor={isDarkMode ? "#e5e7eb" : "#374151"}
                   arcLinkLabelsThickness={2}
                   arcLinkLabelsColor={{ from: "color" }}
                   arcLabelsSkipAngle={10}
-                  arcLabelsTextColor="#ffffff"
-                  theme={NIVO_THEME_DARK}
+                  arcLabelsTextColor={{
+                    from: "color",
+                    modifiers: [["darker", isDarkMode ? 2 : 1.6]],
+                  }}
                 />
               </div>
             </div>
 
             {/* Area by Location */}
-            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-              <h3 className="text-lg font-semibold text-white mb-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-semibold mb-4">
                 Total Area by Location
               </h3>
               <div className="h-80">
@@ -468,7 +474,11 @@ export const CropsAnalytics = ({
                   padding={0.3}
                   valueScale={{ type: "linear" }}
                   colors={COLORS[0]}
-                  borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+                  theme={isDarkMode ? NIVO_THEME_DARK : NIVO_THEME_LIGHT}
+                  borderColor={{
+                    from: "color",
+                    modifiers: [["darker", isDarkMode ? 0.8 : 0.4]],
+                  }}
                   axisTop={null}
                   axisRight={null}
                   axisBottom={{
@@ -490,17 +500,14 @@ export const CropsAnalytics = ({
                   labelSkipWidth={12}
                   labelSkipHeight={12}
                   labelTextColor="#ffffff"
-                  theme={NIVO_THEME_DARK}
                   role="application"
                 />
               </div>
             </div>
 
             {/* Planting Timeline */}
-            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-              <h3 className="text-lg font-semibold text-white mb-4">
-                Planting Timeline
-              </h3>
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-semibold  mb-4">Planting Timeline</h3>
               <div className="h-80">
                 <ResponsiveLine
                   data={timelineData}
@@ -538,14 +545,14 @@ export const CropsAnalytics = ({
                   pointBorderColor={{ from: "serieColor" }}
                   pointLabelYOffset={-12}
                   useMesh={true}
-                  theme={NIVO_THEME_DARK}
+                  theme={isDarkMode ? NIVO_THEME_DARK : NIVO_THEME_LIGHT}
                 />
               </div>
             </div>
 
             {/* Soil Type Distribution */}
-            <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-              <h3 className="text-lg font-semibold text-white mb-4">
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+              <h3 className="text-lg font-semibold  mb-4">
                 Crops by Soil Type
               </h3>
               <div className="h-80">
@@ -557,8 +564,11 @@ export const CropsAnalytics = ({
                   padding={0.3}
                   layout="horizontal"
                   valueScale={{ type: "linear" }}
-                  colors={COLORS[2]}
-                  borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+                  colors={COLORS[1]}
+                  borderColor={{
+                    from: "color",
+                    modifiers: [["darker", isDarkMode ? 0.8 : 0.4]],
+                  }}
                   axisTop={null}
                   axisRight={null}
                   axisBottom={{
@@ -580,21 +590,21 @@ export const CropsAnalytics = ({
                   labelSkipWidth={12}
                   labelSkipHeight={12}
                   labelTextColor="#ffffff"
-                  theme={NIVO_THEME_DARK}
+                  theme={isDarkMode ? NIVO_THEME_DARK : NIVO_THEME_LIGHT}
                 />
               </div>
             </div>
           </div>
 
           {/* Crops List */}
-          <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-            <h3 className="text-lg font-semibold text-white mb-4">
+          <div className="bg-white dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold mb-4">
               Crops List ({filteredData.length})
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="border-b border-gray-700">
-                  <tr className="text-left text-gray-400">
+                <thead className="border-b border-gray-200 dark:border-gray-700">
+                  <tr className="text-left  dark:text-gray-400">
                     <th className="pb-3 font-medium">Crop Name</th>
                     <th className="pb-3 font-medium">Type</th>
                     <th className="pb-3 font-medium">Field</th>
@@ -606,7 +616,7 @@ export const CropsAnalytics = ({
                     <th className="pb-3 font-medium">Status</th>
                   </tr>
                 </thead>
-                <tbody className="text-gray-300">
+                <tbody className="text-gray-800 dark:text-gray-300">
                   {filteredData.map((crop) => {
                     const isHarvested =
                       crop.harvest_date &&
@@ -621,19 +631,17 @@ export const CropsAnalytics = ({
                       ? "Active"
                       : "Planned";
                     const statusColor = isHarvested
-                      ? "text-blue-400"
+                      ? "text-blue-700 dark:text-blue-400"
                       : isActive
-                      ? "text-green-400"
-                      : "text-yellow-400";
+                      ? "text-green-700 dark:text-green-400"
+                      : "text-yellow-700 dark:text-yellow-400";
 
                     return (
                       <tr
                         key={crop._id}
-                        className="border-b border-gray-700/50 hover:bg-gray-700/30"
+                        className="border-b  border-gray-200  dark:border-gray-700/50 hover:dark:bg-gray-700/30 hover:bg-gray-100"
                       >
-                        <td className="py-3 font-medium text-white">
-                          {crop.name}
-                        </td>
+                        <td className="py-3 font-medium">{crop.name}</td>
                         <td className="py-3">{crop.type}</td>
                         <td className="py-3">
                           {typeof crop.field_id === "object"
