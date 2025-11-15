@@ -3,7 +3,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { getAllEquipments } from "@/utils/hooks/api/equipments/useGetAnimals";
+import { getAllEquipments } from "@/utils/hooks/api/equipments/useGetEquipment";
 import { EquipmentsDashboard } from "@/components/features/equipments";
 
 export default async function Equipments() {
@@ -11,7 +11,7 @@ export default async function Equipments() {
 
   // Prefetch the results data
   await queryClient.prefetchQuery({
-    queryKey: ["farmers"],
+    queryKey: ["equipments"],
     queryFn: getAllEquipments,
   });
 

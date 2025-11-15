@@ -86,7 +86,7 @@ Whether you're managing a small family farm or a large agricultural enterprise, 
 
 ### 🎨 **Modern UI/UX**
 
-- **Neobrutalism Design System** - Bold, clean, and distinctive
+- **Design System** - Bold, clean, and distinctive
 - **Dark Mode Support** - Seamless theme switching
 - **Responsive Layout** - Works on desktop, tablet, and mobile
 - **Accessible Components** - Built with Radix UI primitives
@@ -149,7 +149,7 @@ Whether you're managing a small family farm or a large agricultural enterprise, 
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/smart-farm-manager.git
+   git clone https://github.com/cosminsaracil/smart-farm-manager.git
    cd smart-farm-manager
    ```
 

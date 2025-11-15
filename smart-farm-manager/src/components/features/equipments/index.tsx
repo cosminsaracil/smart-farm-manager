@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { EquipmentsHeader } from "./components/EquipmentsHeader";
 import ContentWrapper from "@/components/ui/content-wrapper";
-import { useGetEquipments } from "@/utils/hooks/api/equipments/useGetAnimals";
+import { useGetEquipments } from "@/utils/hooks/api/equipments/useGetEquipment";
 import { LoadingSpinner } from "@/components/ui/Spinner/Spiner";
 import { ErrorPage } from "@/components/ui/Error/ErrorPage";
 

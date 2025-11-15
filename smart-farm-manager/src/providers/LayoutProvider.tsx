@@ -33,6 +33,9 @@ export default function LayoutProvider({ children }: { children: ReactNode }) {
     case ROUTES.ANIMALS:
       title = "Animals Management";
       break;
+    case ROUTES.EQUIPMENTS:
+      title = "Equipments Management";
+      break;
     default:
       title = "";
       break;

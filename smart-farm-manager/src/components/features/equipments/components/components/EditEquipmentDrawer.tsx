@@ -75,7 +75,7 @@ export const EditEquipmentDrawer = ({
 
   const isFormUpdated = useMemo(() => isDirty, [isDirty]);
 
-  // Reset form when crop changes or drawer opens
+  // Reset form when equipment changes or drawer opens
   useEffect(() => {
     if (open && equipment) {
       reset({

@@ -6,7 +6,7 @@ import {
 import { apiClient } from "../../apiClient";
 
 async function deleteEquipment(id: string): Promise<void> {
-  await apiClient(`/animals?id=${id}`, { method: "DELETE" });
+  await apiClient(`/equipments?id=${id}`, { method: "DELETE" });
 }
 
 export function useDeleteEquipment(

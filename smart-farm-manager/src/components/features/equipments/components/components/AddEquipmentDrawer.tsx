@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { CheckCircle2, AlertTriangle, Plus } from "lucide-react";
 
-import { useAddEquipment } from "@/utils/hooks/api/equipments/usePostAnimal";
+import { useAddEquipment } from "@/utils/hooks/api/equipments/usePostEquipment";
 import { useFarmers } from "@/utils/hooks/api/farmers/useGetFarmers";
 
 import { Button } from "@/components/ui/button";
@@ -163,7 +163,7 @@ export const AddEquipmentDrawer = () => {
               )}
             />
 
-            {/* Species */}
+            {/* Type */}
             <FormField
               control={control}
               name="type"
@@ -171,12 +171,23 @@ export const AddEquipmentDrawer = () => {
                 <FormInputField label="Type" required {...field} />
               )}
             />
+
             {/* Status */}
             <FormField
               control={control}
               name="status"
               render={({ field }) => (
-                <FormInputField label="Status" required {...field} />
+                <FormSelectField
+                  label="Status"
+                  required
+                  fullWidth
+                  options={[
+                    { label: "Active", value: "active" },
+                    { label: "Maintenance", value: "maintenance" },
+                    { label: "Retired", value: "retired" },
+                  ]}
+                  {...field}
+                />
               )}
             />
             {/* Purchase date */}
