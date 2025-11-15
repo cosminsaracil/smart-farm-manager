@@ -10,7 +10,7 @@ export default async function Fields() {
 
   // Prefetch the results data
   await queryClient.prefetchQuery({
-    queryKey: ["farmers"],
+    queryKey: ["fields"],
     queryFn: getAllFields,
   });
 

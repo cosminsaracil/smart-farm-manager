@@ -3,7 +3,6 @@ import {
   X,
   BarChart3,
   TrendingUp,
-  MapPin,
   Users,
   Wrench,
   Calendar,
@@ -213,7 +212,7 @@ export const EquipmentAnalytics = ({
     });
 
     return Object.entries(categories)
-      .filter(([_, count]) => count > 0)
+      .filter(([, count]) => count > 0)
       .map(([category, count]) => ({ category, count }));
   }, [filteredEquipment]);
 

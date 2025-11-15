@@ -5,4 +5,5 @@ export const ROUTES = {
   CROPS: "/crops",
   ANIMALS: "/animals",
   EQUIPMENT: "/equipment",
+  TRANSACTIONS: "/transactions",
 };
