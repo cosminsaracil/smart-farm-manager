@@ -8,10 +8,10 @@ import Equipment from "@/models/Equipment";
 export async function GET() {
   try {
     await connectToDatabase();
-    const equipments = await Equipment.find().populate("farmer_id"); // join with Farmer info
-    return NextResponse.json(equipments, { status: 200 });
+    const equipment = await Equipment.find().populate("farmer_id"); // join with Farmer info
+    return NextResponse.json(equipment, { status: 200 });
   } catch (error) {
-    console.error("GET /equipments error:", error);
+    console.error("GET /equipment error:", error);
     return NextResponse.json(
       { error: "Failed to fetch equipment" },
       { status: 500 }
@@ -43,7 +43,7 @@ export async function GET_BY_ID(req: NextRequest) {
 
     return NextResponse.json(equipment, { status: 200 });
   } catch (error) {
-    console.error("GET /equipments/:id error:", error);
+    console.error("GET /equipment/:id error:", error);
     return NextResponse.json(
       { error: "Failed to fetch equipment" },
       { status: 500 }
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     const newEquipment = await Equipment.create(body);
     return NextResponse.json(newEquipment, { status: 201 });
   } catch (error) {
-    console.error("POST /equipments error:", error);
+    console.error("POST /equipment error:", error);
     return NextResponse.json(
       { error: "Failed to create equipment" },
       { status: 500 }
@@ -91,7 +91,7 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json(updatedEquipment, { status: 200 });
   } catch (error) {
-    console.error("PUT /equipments error:", error);
+    console.error("PUT /equipment error:", error);
     return NextResponse.json(
       { error: "Failed to update equipment" },
       { status: 500 }
@@ -117,7 +117,7 @@ export async function DELETE(req: NextRequest) {
     await Equipment.findByIdAndDelete(id);
     return NextResponse.json({ message: "Equipment deleted" }, { status: 200 });
   } catch (error) {
-    console.error("DELETE /equipments error:", error);
+    console.error("DELETE /equipment error:", error);
     return NextResponse.json(
       { error: "Failed to delete equipment" },
       { status: 500 }

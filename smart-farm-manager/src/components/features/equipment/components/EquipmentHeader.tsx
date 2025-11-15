@@ -10,20 +10,18 @@ import { AddEquipmentDrawer } from "./components/AddEquipmentDrawer";
 import { Axe, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import type { EquipmentsHeaderProps } from "./types";
+import type { EquipmentHeaderProps } from "./types";
 
-export const EquipmentsHeader = ({
-  onViewAnalytics,
-}: EquipmentsHeaderProps) => {
+export const EquipmentHeader = ({ onViewAnalytics }: EquipmentHeaderProps) => {
   return (
     <ContentHeader className="mb-8 border border-gray-300 dark:border-gray-600 shadow-sm flex-row items-center">
       <div className="flex flex-col gap-2 flex-1">
         <ContentHeaderTitle className="font-semibold text-foreground">
           <Axe className="h-5 w-5 text-primary" />
-          Equipments Overview
+          Equipment Overview
         </ContentHeaderTitle>
         <ContentHeaderDescription>
-          Manage your farm equipments efficiently — track equipment types,
+          Manage your farm equipment efficiently — track equipment types,
           operational status, maintenance schedules, and usage history to ensure
           optimal performance and longevity of your machinery.
         </ContentHeaderDescription>

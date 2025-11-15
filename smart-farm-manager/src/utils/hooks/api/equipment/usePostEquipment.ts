@@ -7,7 +7,7 @@ import { apiClient } from "../../apiClient";
 import { Equipment, EquipmentPayload } from "./types";
 
 async function addEquipment(data: EquipmentPayload): Promise<Equipment> {
-  return apiClient<Equipment>("/equipments", {
+  return apiClient<Equipment>("/equipment", {
     method: "POST",
     body: data,
   });

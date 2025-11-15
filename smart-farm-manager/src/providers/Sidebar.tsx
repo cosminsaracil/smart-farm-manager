@@ -14,7 +14,7 @@ export default function Sidebar() {
     { text: "Fields", icon: Grid2x2X, href: ROUTES.FIELDS },
     { text: "Crops", icon: Wheat, href: ROUTES.CROPS },
     { text: "Animals", icon: Dog, href: ROUTES.ANIMALS },
-    { text: "Equipments", icon: Cog, href: ROUTES.EQUIPMENTS },
+    { text: "Equipment", icon: Cog, href: ROUTES.EQUIPMENT },
   ];
 
   return (

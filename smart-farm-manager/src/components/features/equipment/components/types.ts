@@ -1,20 +1,20 @@
-import { Equipment } from "@/utils/hooks/api/equipments/types";
+import { Equipment } from "@/utils/hooks/api/equipment/types";
 export type ActionButton = {
   id: string;
   label: string;
 };
 
 export type EquipmentAnalyticsProps = {
-  equipments: Equipment[];
+  equipment: Equipment[];
   open: boolean;
   onClose: () => void;
 };
 
-export type EquipmentsHeaderProps = {
+export type EquipmentHeaderProps = {
   onViewAnalytics: () => void;
 };
 
-export type EditEquipmentsDrawerProps = {
+export type EditEquipmentDrawerProps = {
   equipment: Equipment;
   open: boolean;
   onOpenChange: (open: boolean) => void;

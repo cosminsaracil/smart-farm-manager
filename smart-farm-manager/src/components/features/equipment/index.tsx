@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { EquipmentsHeader } from "./components/EquipmentsHeader";
+import { EquipmentHeader } from "./components/EquipmentHeader";
 import ContentWrapper from "@/components/ui/content-wrapper";
-import { useGetEquipments } from "@/utils/hooks/api/equipments/useGetEquipment";
+import { useGetEquipment } from "@/utils/hooks/api/equipment/useGetEquipment";
 import { LoadingSpinner } from "@/components/ui/Spinner/Spiner";
 import { ErrorPage } from "@/components/ui/Error/ErrorPage";
 
-export const EquipmentsDashboard = () => {
-  const { data, isFetching, error, refetch } = useGetEquipments();
+export const EquipmentDashboard = () => {
+  const { data, isFetching, error, refetch } = useGetEquipment();
   const [analyticsOpen, setAnalyticsOpen] = useState(false);
 
   if (isFetching) return <LoadingSpinner />;
@@ -16,14 +16,14 @@ export const EquipmentsDashboard = () => {
   if (error)
     return (
       <ErrorPage
-        message="Failed to load equipments data."
+        message="Failed to load equipment data."
         onRetry={() => refetch()}
       />
     );
 
   return (
     <ContentWrapper>
-      <EquipmentsHeader onViewAnalytics={() => setAnalyticsOpen(true)} />
+      <EquipmentHeader onViewAnalytics={() => setAnalyticsOpen(true)} />
       {/* <FarmerBody data={data || []} /> */}
     </ContentWrapper>
   );

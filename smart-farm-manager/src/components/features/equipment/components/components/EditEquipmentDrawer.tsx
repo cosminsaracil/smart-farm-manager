@@ -15,10 +15,10 @@ import { Form, FormField } from "@/components/ui/Form/form";
 import { FormInputField } from "@/components/ui/Form/FormInputField";
 import { FormSelectField } from "@/components/ui/Form/FormSelectField";
 
-import type { Equipment } from "@/utils/hooks/api/equipments/types";
-import type { EditEquipmentsDrawerProps } from "../types";
+import type { Equipment } from "@/utils/hooks/api/equipment/types";
+import type { EditEquipmentDrawerProps } from "../types";
 
-const equipmentsSchema = z
+const equipmentSchema = z
   .object({
     name: z.string().min(1, "Name is required"),
     type: z.string().min(1, "Type is required"),
@@ -32,14 +32,14 @@ const equipmentsSchema = z
     path: ["last_service_date"],
   });
 
-type EquipmentsFormData = z.infer<typeof equipmentsSchema>;
+type EquipmentFormData = z.infer<typeof equipmentSchema>;
 
 export const EditEquipmentDrawer = ({
   equipment,
   open,
   onOpenChange,
   onUpdate,
-}: EditEquipmentsDrawerProps) => {
+}: EditEquipmentDrawerProps) => {
   const [openDialog, setOpenDialog] = useState(false);
   const { data: farmers } = useFarmers();
 
@@ -57,8 +57,8 @@ export const EditEquipmentDrawer = ({
     return typeof farmerId === "object" ? farmerId._id : farmerId;
   };
 
-  const form = useForm<EquipmentsFormData>({
-    resolver: zodResolver(equipmentsSchema),
+  const form = useForm<EquipmentFormData>({
+    resolver: zodResolver(equipmentSchema),
     defaultValues: {
       name: equipment.name,
       type: equipment.type,
@@ -89,7 +89,7 @@ export const EditEquipmentDrawer = ({
     }
   }, [open, equipment, reset]);
 
-  const onSubmit = async (data: EquipmentsFormData) => {
+  const onSubmit = async (data: EquipmentFormData) => {
     const updateData: Equipment = {
       _id: equipment._id,
       name: data.name,

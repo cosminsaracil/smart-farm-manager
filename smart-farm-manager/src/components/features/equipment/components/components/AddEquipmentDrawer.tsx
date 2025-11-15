@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { CheckCircle2, AlertTriangle, Plus } from "lucide-react";
 
-import { useAddEquipment } from "@/utils/hooks/api/equipments/usePostEquipment";
+import { useAddEquipment } from "@/utils/hooks/api/equipment/usePostEquipment";
 import { useFarmers } from "@/utils/hooks/api/farmers/useGetFarmers";
 
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,7 @@ import { FormInputField } from "@/components/ui/Form/FormInputField";
 import { FormSelectField } from "@/components/ui/Form/FormSelectField";
 import { DateTimePicker } from "@/components/ui/datetime-picker";
 
-const equipmentsSchema = z
+const equipmentSchema = z
   .object({
     name: z.string().min(1, "Name is required"),
     type: z.string().min(1, "Type is required"),
@@ -33,7 +33,7 @@ const equipmentsSchema = z
     path: ["last_service_date"],
   });
 
-type EquipmentsFormData = z.infer<typeof equipmentsSchema>;
+type EquipmentFormData = z.infer<typeof equipmentSchema>;
 
 export const AddEquipmentDrawer = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -50,8 +50,8 @@ export const AddEquipmentDrawer = () => {
     }));
   }, [farmers]);
 
-  const form = useForm<EquipmentsFormData>({
-    resolver: zodResolver(equipmentsSchema),
+  const form = useForm<EquipmentFormData>({
+    resolver: zodResolver(equipmentSchema),
     defaultValues: {
       name: "",
       type: "",
@@ -68,7 +68,7 @@ export const AddEquipmentDrawer = () => {
 
   const addEquipmentMut = useAddEquipment({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["equipments"] });
+      queryClient.invalidateQueries({ queryKey: ["equipment"] });
       toast.success("Equipment added successfully!", {
         icon: <CheckCircle2 className="h-5 w-5 text-green-500" />,
       });
@@ -82,7 +82,7 @@ export const AddEquipmentDrawer = () => {
     },
   });
 
-  const onSubmit = async (data: EquipmentsFormData) => {
+  const onSubmit = async (data: EquipmentFormData) => {
     try {
       const payload = {
         ...data,

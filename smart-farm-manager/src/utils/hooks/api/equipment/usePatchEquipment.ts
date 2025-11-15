@@ -8,7 +8,7 @@ import { apiClient } from "../../apiClient";
 async function updateEquipment(
   data: UpdateEquipmentPayload
 ): Promise<Equipment> {
-  return apiClient<Equipment>("/equipments", {
+  return apiClient<Equipment>("/equipment", {
     method: "PUT",
     body: data,
   });

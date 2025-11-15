@@ -3,21 +3,21 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { getAllEquipments } from "@/utils/hooks/api/equipments/useGetEquipment";
-import { EquipmentsDashboard } from "@/components/features/equipments";
+import { getAllEquipment } from "@/utils/hooks/api/equipment/useGetEquipment";
+import { EquipmentDashboard } from "@/components/features/equipment";
 
-export default async function Equipments() {
+export default async function Equipment() {
   const queryClient = new QueryClient();
 
   // Prefetch the results data
   await queryClient.prefetchQuery({
-    queryKey: ["equipments"],
-    queryFn: getAllEquipments,
+    queryKey: ["equipment"],
+    queryFn: getAllEquipment,
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <EquipmentsDashboard />
+      <EquipmentDashboard />
     </HydrationBoundary>
   );
 }
