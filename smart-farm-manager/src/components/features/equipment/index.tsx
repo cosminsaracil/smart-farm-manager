@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { EquipmentHeader } from "./components/EquipmentHeader";
+import { EquipmentBody } from "./components/EquipmentBody";
+import { EquipmentAnalytics } from "./components/EquipmentAnalytics";
 import ContentWrapper from "@/components/ui/content-wrapper";
 import { useGetEquipment } from "@/utils/hooks/api/equipment/useGetEquipment";
 import { LoadingSpinner } from "@/components/ui/Spinner/Spiner";
@@ -10,6 +12,8 @@ import { ErrorPage } from "@/components/ui/Error/ErrorPage";
 export const EquipmentDashboard = () => {
   const { data, isFetching, error, refetch } = useGetEquipment();
   const [analyticsOpen, setAnalyticsOpen] = useState(false);
+
+  console.log("Data:", data);
 
   if (isFetching) return <LoadingSpinner />;
 
@@ -24,7 +28,12 @@ export const EquipmentDashboard = () => {
   return (
     <ContentWrapper>
       <EquipmentHeader onViewAnalytics={() => setAnalyticsOpen(true)} />
-      {/* <FarmerBody data={data || []} /> */}
+      <EquipmentBody data={data || []} />
+      <EquipmentAnalytics
+        equipment={data || []}
+        open={analyticsOpen}
+        onClose={() => setAnalyticsOpen(false)}
+      />
     </ContentWrapper>
   );
 };
