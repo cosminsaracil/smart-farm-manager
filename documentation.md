@@ -8,22 +8,17 @@ First, I set up the Next project which will be the fullstack solution. The DB wi
 
 The application uses 6 core entities:
 
-- **Farmers** - Utilizatorii sistemului (administratorii fermei) 
+- **Farmers** - System users (farm administrators)
   - Fields: `_id`, `name`, `email`, `password`, `role`
-  
-- **Fields** (terenurile) - Parcela de teren din fermă 
+- **Fields** - Land parcels from the farm
   - Fields: `_id`, `name`, `area`, `location`, `soil_type`, `farmer_id`
-  
-- **Crops** (culturile) - Tipurile de plante cultivate 
+- **Crops** - Types of plants cultivated
   - Fields: `_id`, `name`, `type`, `planting_date`, `harvest_date`, `field_id`
-  
-- **Animals** (animalele) - Evidența animalelor de fermă 
+- **Animals** - Farm animal records
   - Fields: `_id`, `tag`, `species`, `birth_date`, `weight`, `health_status`, `farmer_id`
-  
-- **Equipment** (echipamente) - Tractoare, utilaje etc. 
+- **Equipment** - Tractors, machinery, etc.
   - Fields: `_id`, `name`, `type`, `status`, `purchase_date`, `last_service_date`, `farmer_id`
-  
-- **Transactions** (tranzacții financiare) - Înregistrări venituri și cheltuieli 
+- **Transactions** - Financial transactions records
   - Fields: `_id`, `type` (income/expense), `category`, `amount`, `date`, `description`, `payment_method`, `payment_status`, `farmer_id`, `equipment_id` (optional), `invoice_number`, `vendor_name`
 
 ## Conceptual ERD Model
@@ -99,14 +94,14 @@ The application uses 6 core entities:
 
 ## Relationships
 
-| Relationship           | Type        | Description                                           |
-| ---------------------- | ----------- | ----------------------------------------------------- |
-| Farmer → Fields        | 1-to-many   | A farmer owns many fields                             |
-| Field → Crops          | 1-to-many   | A field has many crops                                |
-| Farmer → Animals       | 1-to-many   | A farmer owns many animals                            |
-| Farmer → Equipment     | 1-to-many   | A farmer owns many pieces of equipment                |
-| Farmer → Transactions  | 1-to-many   | A farmer has many financial transactions              |
-| Equipment → Transactions | 1-to-many | Optional link for equipment-related transactions      |
+| Relationship             | Type      | Description                                      |
+| ------------------------ | --------- | ------------------------------------------------ |
+| Farmer → Fields          | 1-to-many | A farmer owns many fields                        |
+| Field → Crops            | 1-to-many | A field has many crops                           |
+| Farmer → Animals         | 1-to-many | A farmer owns many animals                       |
+| Farmer → Equipment       | 1-to-many | A farmer owns many pieces of equipment           |
+| Farmer → Transactions    | 1-to-many | A farmer has many financial transactions         |
+| Equipment → Transactions | 1-to-many | Optional link for equipment-related transactions |
 
 MongoDB fiind o bază NoSQL, relațiile nu se implementează prin foreign keys reale, ci prin referințe logice (ID-uri).
 
@@ -126,14 +121,14 @@ De exemplu, în Fields salvăm farmer_id (ObjectId al fermierului), iar în Crop
 
 The following 6 main entities are implemented:
 
-| Entity            | Description                                   | Key Fields                                                                                                    |
-| ----------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| **Farmer**        | Users of the system (admins, workers)        | `name`, `email`, `password`, `role`                                                                           |
-| **Field**         | Land parcels                                  | `name`, `area`, `location`, `soil_type`, `farmer_id`                                                          |
-| **Crop**          | Crops cultivated on fields                    | `name`, `type`, `planting_date`, `harvest_date`, `field_id`                                                   |
-| **Animal**        | Animals managed on the farm                   | `tag`, `species`, `birth_date`, `weight`, `health_status`, `farmer_id`                                        |
-| **Equipment**     | Agricultural machinery                        | `name`, `type`, `status`, `purchase_date`, `last_service_date`, `farmer_id`                                   |
-| **Transaction**   | Financial transactions (income/expenses)      | `type`, `category`, `amount`, `date`, `payment_method`, `payment_status`, `farmer_id`, `equipment_id`         |
+| Entity          | Description                              | Key Fields                                                                                            |
+| --------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **Farmer**      | Users of the system (admins, workers)    | `name`, `email`, `password`, `role`                                                                   |
+| **Field**       | Land parcels                             | `name`, `area`, `location`, `soil_type`, `farmer_id`                                                  |
+| **Crop**        | Crops cultivated on fields               | `name`, `type`, `planting_date`, `harvest_date`, `field_id`                                           |
+| **Animal**      | Animals managed on the farm              | `tag`, `species`, `birth_date`, `weight`, `health_status`, `farmer_id`                                |
+| **Equipment**   | Agricultural machinery                   | `name`, `type`, `status`, `purchase_date`, `last_service_date`, `farmer_id`                           |
+| **Transaction** | Financial transactions (income/expenses) | `type`, `category`, `amount`, `date`, `payment_method`, `payment_status`, `farmer_id`, `equipment_id` |
 
 ---
 
@@ -141,14 +136,14 @@ The following 6 main entities are implemented:
 
 Each entity has a complete interface (frontend + backend):
 
-| Page            | Functions      | Description                                                          |
-| --------------- | -------------- | -------------------------------------------------------------------- |
-| `/farmers`      | CRUD complete  | Add, edit, delete, and list farmers                                  |
-| `/fields`       | CRUD complete  | Manage land parcels with location and soil type tracking             |
-| `/crops`        | CRUD complete  | Manage crops (linked to fields)                                      |
-| `/animals`      | CRUD complete  | Manage livestock with health tracking                                |
-| `/equipment`    | CRUD complete  | Manage machinery and equipment                                       |
-| `/transactions` | CRUD complete  | Manage financial transactions (income/expenses) with payment tracking|
+| Page            | Functions     | Description                                                           |
+| --------------- | ------------- | --------------------------------------------------------------------- |
+| `/farmers`      | CRUD complete | Add, edit, delete, and list farmers                                   |
+| `/fields`       | CRUD complete | Manage land parcels with location and soil type tracking              |
+| `/crops`        | CRUD complete | Manage crops (linked to fields)                                       |
+| `/animals`      | CRUD complete | Manage livestock with health tracking                                 |
+| `/equipment`    | CRUD complete | Manage machinery and equipment                                        |
+| `/transactions` | CRUD complete | Manage financial transactions (income/expenses) with payment tracking |
 
 🔹 These constitute the 6 data collection/management interfaces required by the project.
 
@@ -158,17 +153,18 @@ Each entity has a complete interface (frontend + backend):
 
 There are analytics pages where data from multiple entities is combined:
 
-| Report                          | Purpose                                                      | Entities Queried                |
-| ------------------------------- | ------------------------------------------------------------ | ------------------------------- |
-| **1️⃣ Fields Analytics**        | Field distribution, area analysis, top farmers               | `fields` + `farmers`            |
-| **2️⃣ Animals Analytics**       | Livestock health status, species distribution                | `animals` + `farmers`           |
-| **3️⃣ Crops Analytics**         | Crop lifecycle tracking, harvest predictions                 | `crops` + `fields`              |
-| **4️⃣ Equipment Analytics**     | Equipment status, maintenance tracking                       | `equipment` + `farmers`         |
-| **5️⃣ Transactions Analytics**  | Financial overview, income vs expenses, payment status       | `transactions` + `farmers` + `equipment` |
+| Report                        | Purpose                                                | Entities Queried                         |
+| ----------------------------- | ------------------------------------------------------ | ---------------------------------------- |
+| **1️⃣ Fields Analytics**       | Field distribution, area analysis, top farmers         | `fields` + `farmers`                     |
+| **2️⃣ Animals Analytics**      | Livestock health status, species distribution          | `animals` + `farmers`                    |
+| **3️⃣ Crops Analytics**        | Crop lifecycle tracking, harvest predictions           | `crops` + `fields`                       |
+| **4️⃣ Equipment Analytics**    | Equipment status, maintenance tracking                 | `equipment` + `farmers`                  |
+| **5️⃣ Transactions Analytics** | Financial overview, income vs expenses, payment status | `transactions` + `farmers` + `equipment` |
 
 ### Details:
 
 **1️⃣ Fields Analytics Component:**
+
 - Integrates 2 entities (`fields` + `farmers`)
 - Offers interactive filters (by location, soil type, and farmer)
 - Provides computed statistics (totals, averages, top performers)
@@ -176,24 +172,28 @@ There are analytics pages where data from multiple entities is combined:
 - Displays summary KPIs (total area, total fields, average field size)
 
 **2️⃣ Animals Analytics Component:**
+
 - Integrates animals data with farmer information
 - Interactive filters by species, health status, and farmer
 - Visual charts showing species distribution and health statistics
 - Summary cards with total animals, average weight, and health overview
 
 **3️⃣ Crops Analytics Component:**
+
 - Tracks crop planting and harvest schedules
 - Links crops to specific fields
 - Visualizes crop type distribution
 - Calendar views for planting/harvest dates
 
 **4️⃣ Equipment Analytics Component:**
+
 - Equipment status monitoring (active, maintenance, retired)
 - Service history tracking
 - Equipment distribution by farmer
 - Maintenance schedule visualization
 
 **5️⃣ Transactions Analytics Component:**
+
 - Financial tracking with income vs expense analysis
 - Payment status monitoring (paid, pending, overdue)
 - Category-wise breakdown of transactions
@@ -207,6 +207,7 @@ Charts are added to make the data visual and interactive using Nivo library.
 ## 4. Implementation Order
 
 ✅ **Completed:**
+
 - Farmers CRUD ✓
 - Fields CRUD ✓
 - Crops CRUD (with Field relationship) ✓
@@ -218,6 +219,7 @@ Charts are added to make the data visual and interactive using Nivo library.
 - Dark/Light theme support ✓
 
 **Next Steps:**
+
 - Additional reporting features
 - Dashboard homepage with overview statistics
 - Advanced filtering and search
@@ -229,11 +231,13 @@ Charts are added to make the data visual and interactive using Nivo library.
 ## 5. General Architecture
 
 ### Backend
+
 - **Next.js API Routes** - Serverless API endpoints in `/app/api/`
 - **MongoDB** - NoSQL database running in Docker container (port 27017)
 - **Mongoose** - ODM for MongoDB with schema validation
 
 ### Frontend
+
 - **Next.js 16** with App Router - React framework
 - **React 19** - UI library
 - **TypeScript 5** - Type-safe development
@@ -243,11 +247,13 @@ Charts are added to make the data visual and interactive using Nivo library.
 - **Nivo** - Data visualization library
 
 ### State Management
+
 - React Query for server state
 - React Context for theme management
 - React Hook Form for form state with Zod validation
 
 ### Design System
+
 - Neobrutalism-inspired design with bold borders
 - Consistent dark/light theme support
 - Responsive layouts with mobile-first approach
@@ -341,12 +347,14 @@ smart-farm-manager/
 ## 8. Key Features Implemented
 
 ### Data Visualization
+
 - Interactive bar charts for comparative analysis
 - Pie charts for distribution visualization
 - Real-time data updates with React Query
 - Dark/light mode compatible chart themes
 
 ### User Experience
+
 - Responsive data tables with sorting, filtering, and pagination
 - Drawer-based forms for adding/editing records
 - Confirmation dialogs for destructive actions
@@ -354,12 +362,14 @@ smart-farm-manager/
 - Loading states and error handling
 
 ### Data Management
+
 - Complete CRUD operations for all 6 entities
 - Form validation with Zod schemas
 - Relationship management between entities
 - Optimistic updates with automatic cache invalidation
 
 ### Analytics & Reporting
+
 - Interactive filters for data analysis
 - Summary statistics and KPIs
 - Top performers tracking
