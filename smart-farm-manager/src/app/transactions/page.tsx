@@ -3,6 +3,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import { TransactionDashboard } from "@/components/features/transactions";
 import { getAllTransactions } from "@/utils/hooks/api/transactions/useGetTransaction";
 export default async function Transactions() {
   const queryClient = new QueryClient();
@@ -13,5 +14,9 @@ export default async function Transactions() {
     queryFn: getAllTransactions,
   });
 
-  return <HydrationBoundary state={dehydrate(queryClient)}></HydrationBoundary>;
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <TransactionDashboard />
+    </HydrationBoundary>
+  );
 }

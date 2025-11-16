@@ -13,8 +13,6 @@ export const EquipmentDashboard = () => {
   const { data, isFetching, error, refetch } = useGetEquipment();
   const [analyticsOpen, setAnalyticsOpen] = useState(false);
 
-  console.log("Data:", data);
-
   if (isFetching) return <LoadingSpinner />;
 
   if (error)

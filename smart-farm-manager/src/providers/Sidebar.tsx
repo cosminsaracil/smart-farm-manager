@@ -2,7 +2,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ROUTES } from "@/utils/routes";
-import { Home, Users2, Grid2x2X, Wheat, Dog, Cog } from "lucide-react";
+import {
+  Home,
+  Users2,
+  Grid2x2X,
+  Wheat,
+  Dog,
+  Cog,
+  ArrowLeftRight,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function Sidebar() {
@@ -15,6 +23,7 @@ export default function Sidebar() {
     { text: "Crops", icon: Wheat, href: ROUTES.CROPS },
     { text: "Animals", icon: Dog, href: ROUTES.ANIMALS },
     { text: "Equipment", icon: Cog, href: ROUTES.EQUIPMENT },
+    { text: "Transactions", icon: ArrowLeftRight, href: ROUTES.TRANSACTIONS },
   ];
 
   return (

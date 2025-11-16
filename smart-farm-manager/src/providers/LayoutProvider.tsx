@@ -36,6 +36,9 @@ export default function LayoutProvider({ children }: { children: ReactNode }) {
     case ROUTES.EQUIPMENT:
       title = "Equipment Management";
       break;
+    case ROUTES.TRANSACTIONS:
+      title = "Transactions Management";
+      break;
     default:
       title = "";
       break;
